@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { connectDB } from './config/dbConnect';
 
 dotenv.config({ path: '.env' });
 
@@ -19,7 +20,16 @@ async function startServer() {
     });
   } catch (error) {
     console.error('Error starting server:', error);
+    process.exit(1);
   }
 }
 
-startServer();
+connectDB()
+  .then(() => {
+    console.log('✅ Database connected successfully');
+    startServer();
+  })
+  .catch((error) => {
+    console.error('❌ Error connecting to MongoDB:', error.message);
+    process.exit(1);
+  });
