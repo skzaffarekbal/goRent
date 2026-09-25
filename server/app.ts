@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './config/dbConnect';
+import { startApolloServer } from './apollo/apolloServer';
 
 dotenv.config({ path: '.env' });
 
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 4000;
 
 async function startServer() {
   try {
+    await startApolloServer(app);
     app.listen(PORT, () => {
       console.log(`Server started on port ${PORT} at http://localhost:${PORT}`);
     });
