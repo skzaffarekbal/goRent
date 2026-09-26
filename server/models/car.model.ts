@@ -1,3 +1,4 @@
+import { CarStatus } from '@gorent/shared';
 import mongoose from 'mongoose';
 
 const carSchema = new mongoose.Schema(
@@ -13,6 +14,7 @@ const carSchema = new mongoose.Schema(
     status: {
       type: String,
       default: 'Draft',
+      enum: { values: CarStatus, message: 'Please enter a valid car status' },
     },
     rentPerDay: {
       type: Number,

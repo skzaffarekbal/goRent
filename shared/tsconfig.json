@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "es6",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "lib": ["ES2021"],
+    "outDir": "dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"]
+}
