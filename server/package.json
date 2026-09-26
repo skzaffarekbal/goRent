@@ -7,7 +7,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec tsx app.ts"
+    "dev": "nodemon --exec tsx app.ts",
+    "seeder": "tsx seeder/seeder.ts --outDir .temp"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
