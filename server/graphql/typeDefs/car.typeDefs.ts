@@ -58,5 +58,7 @@ export const carTypeDefs = gql`
 
   type Mutation {
     createCar(carInput: CarInput!): Car
+    updateCar(carId: ID!, carInput: CarInput!): Boolean
+    deleteCar(carId: ID!): Boolean
   }
 `;

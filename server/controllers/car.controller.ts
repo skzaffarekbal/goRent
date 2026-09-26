@@ -16,3 +16,17 @@ export const getCarById = async (carId: string) => {
   if (!car) throw new Error('Car not found');
   return car;
 };
+
+export const updateCar = async (carId: string, carInput: CarInput) => {
+  const car = await Car.findById(carId);
+  if (!car) throw new Error('Car not found');
+  await car.set(carInput).save();
+  return true;
+};
+
+export const deleteCar = async (carId: string) => {
+  const car = await Car.findById(carId);
+  if (!car) throw new Error('Car not found');
+  await car?.deleteOne();
+  return true;
+};
