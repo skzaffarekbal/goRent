@@ -1,4 +1,12 @@
+import Car from '../models/car.model';
+import { CarInput } from '../types/car.types';
+
 export const getAllCars = async () => {
-  // Logic to get all cars
-  return 'Hello From getAllCars Controller';
+  const cars = await Car.find();
+  return cars;
+};
+
+export const createCar = async (carInput: CarInput) => {
+  const newCar = await Car.create(carInput);
+  return newCar;
 };
