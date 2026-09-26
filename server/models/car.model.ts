@@ -1,7 +1,16 @@
-import { CarStatus } from '@gorent/shared';
+import {
+  CarBrand,
+  CarCategories,
+  CarDoors,
+  CarFuelTypes,
+  CarSeats,
+  CarStatus,
+  CarTransmissions,
+  ICar,
+} from '@gorent/shared';
 import mongoose from 'mongoose';
 
-const carSchema = new mongoose.Schema(
+const carSchema = new mongoose.Schema<ICar>(
   {
     name: {
       type: String,
@@ -51,6 +60,7 @@ const carSchema = new mongoose.Schema(
     brand: {
       type: String,
       required: [true, 'Please enter car brand'],
+      enum: { values: CarBrand, message: 'Please enter a valid car brand' },
     },
     year: {
       type: Number,
@@ -59,6 +69,7 @@ const carSchema = new mongoose.Schema(
     transmission: {
       type: String,
       required: [true, 'Please enter car transmission'],
+      enum: { values: CarTransmissions, message: 'Please enter a valid car transmission' },
     },
     mileage: {
       type: Number,
@@ -71,18 +82,22 @@ const carSchema = new mongoose.Schema(
     seats: {
       type: Number,
       required: [true, 'Please enter car seats'],
+      enum: { values: CarSeats, message: 'Please enter a valid car seats' },
     },
     doors: {
       type: Number,
       required: [true, 'Please enter car doors'],
+      enum: { values: CarDoors, message: 'Please enter a valid car doors' },
     },
     fuelType: {
       type: String,
       required: [true, 'Please enter car fuel type'],
+      enum: { values: CarFuelTypes, message: 'Please enter a valid car fuel type' },
     },
     category: {
       type: String,
       required: [true, 'Please enter car category'],
+      enum: { values: CarCategories, message: 'Please enter a valid car category' },
     },
     reviews: [String],
   },
@@ -98,5 +113,5 @@ carSchema.virtual('ratings').get(function () {
   };
 });
 
-const Car = mongoose.model('Car', carSchema);
+const Car = mongoose.model<ICar>('Car', carSchema);
 export default Car;
