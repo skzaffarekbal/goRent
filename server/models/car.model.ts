@@ -89,5 +89,12 @@ const carSchema = new mongoose.Schema(
   },
 );
 
+carSchema.virtual('ratings').get(function () {
+  return {
+    value: 5,
+    count: 10,
+  };
+});
+
 const Car = mongoose.model('Car', carSchema);
 export default Car;
