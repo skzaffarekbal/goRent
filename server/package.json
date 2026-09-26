@@ -19,6 +19,7 @@
   "dependencies": {
     "@apollo/server": "^5.5.1",
     "@as-integrations/express5": "^1.1.2",
+    "@gorent/shared": "file:../shared",
     "@graphql-tools/schema": "^10.1.1",
     "dotenv": "^18.0.3",
     "express": "^5.2.1",
