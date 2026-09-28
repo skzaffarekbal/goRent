@@ -10,6 +10,7 @@ import CarFeatures from '@/components/car/CarFeatures';
 
 import { CarFaqs } from '@/components/car/CarFaqs';
 import { CarImagesSlider } from '@/components/car/CarImagesSlider';
+import { StarRating } from '@/components/ui/star-rating';
 // import { CustomBreadcrumb } from "../layout/BreadCrumbs";
 // import { BookingForm } from "../booking/BookingForm";
 // import CarReviews from "../review/CarReviews";
@@ -53,7 +54,13 @@ const CarDetails = () => {
                     </p>
 
                     <div className='flex items-center my-5'>
-                      {/* Star Rating Component */}
+                      <StarRating
+                        rating={car?.ratings?.value}
+                        starRatedColor='#f1a545'
+                        emptyColor='#cccccc'
+                        numberOfStars={5}
+                        size={4}
+                      />
                       <p className='ms-2 text-sm font-bold text-gray-900 dark:text-white'>
                         {car.ratings.value}
                       </p>
