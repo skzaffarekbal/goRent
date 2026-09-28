@@ -11,6 +11,7 @@ import CarFeatures from '@/components/car/CarFeatures';
 import { CarFaqs } from '@/components/car/CarFaqs';
 import { CarImagesSlider } from '@/components/car/CarImagesSlider';
 import { StarRating } from '@/components/ui/star-rating';
+import LoadingSpinner from '@/components/layout/LoadingSpinner';
 // import { CustomBreadcrumb } from "../layout/BreadCrumbs";
 // import { BookingForm } from "../booking/BookingForm";
 // import CarReviews from "../review/CarReviews";
@@ -28,7 +29,7 @@ const CarDetails = () => {
   const car: ICar = data?.getCarById;
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner fullScreen={true} size={60} />;
   }
 
   return (
