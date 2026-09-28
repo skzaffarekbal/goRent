@@ -20,3 +20,35 @@ query GetAllCars {
   }
 }
 `;
+
+export const GET_CAR_BY_ID = gql`
+query GetCarById($carId: ID!) {
+  getCarById(carId: $carId) {
+    id
+    name
+    description
+    brand
+    doors
+    fuelType
+    year
+    transmission
+    status
+    seats
+    rentPerDay
+    mileage
+    power
+    category
+    address
+    ratings {
+      count
+      value
+    }
+    images {
+      public_id
+      url
+    }
+    createdAt
+    updatedAt
+  }
+}
+`;
