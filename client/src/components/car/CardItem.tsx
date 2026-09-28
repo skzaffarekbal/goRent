@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { CarFront, CircleDot, MoveRight } from 'lucide-react';
 import type { ICar } from '@gorent/shared';
+import { StarRating } from '@/components/ui/star-rating';
 
 const CardItem = ({ car }: { car: ICar }) => {
   return (
@@ -38,7 +39,13 @@ const CardItem = ({ car }: { car: ICar }) => {
             </Badge>
           </div>
           <div className='flex items-center my-2'>
-            {/* Star Ratings Component */}
+            <StarRating
+              rating={car?.ratings?.value}
+              starRatedColor='#f1a545'
+              emptyColor='#cccccc'
+              numberOfStars={5}
+              size={3}
+            />
             <p className='ms-2 text-sm font-bold text-gray-900 dark:text-white'>
               {car?.ratings?.value}
             </p>
