@@ -10,16 +10,16 @@ const CardItem = ({ car }: { car: ICar }) => {
     <Card className='m-2 my-4'>
       <div className='flex items-center bg-white rounded-lg'>
         <div className='w-48 h-48'>
-          {/* {car?.images[0] ? (
+          {car?.images[0] ? (
             <img
               src={car?.images[0].url}
               alt={'Car thumbnail'}
               className='h-full w-full object-cover'
               fetchPriority='low'
             />
-          ) : ( */}
-          <CarFront color='#e3e3e3' className='h-full w-full' />
-          {/* )} */}
+          ) : (
+            <CarFront color='#e3e3e3' className='h-full w-full' />
+          )}
         </div>
         <div className='px-3 flex-1'>
           <Link to={`/car/${car.id}`}>
