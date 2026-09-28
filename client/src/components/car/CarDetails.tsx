@@ -9,7 +9,7 @@ import type { ICar } from '@gorent/shared';
 import CarFeatures from '@/components/car/CarFeatures';
 
 import { CarFaqs } from '@/components/car/CarFaqs';
-// import { CarImagesSlider } from "./CarImageSlider";
+import { CarImagesSlider } from '@/components/car/CarImagesSlider';
 // import { CustomBreadcrumb } from "../layout/BreadCrumbs";
 // import { BookingForm } from "../booking/BookingForm";
 // import CarReviews from "../review/CarReviews";
@@ -44,7 +44,7 @@ const CarDetails = () => {
                   </Badge>
                 </CardTitle>
                 <div className='text-sm text-muted-foreground'>
-                  {/* <CarImagesSlider /> */}
+                  <CarImagesSlider images={car?.images} />
                   <div className='px-8 mt-5'>
                     <h1 className='text-3xl font-bold'>{car.name}</h1>
 
