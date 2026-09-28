@@ -8,16 +8,16 @@ export const cars = [
     address: 'New York City, NY',
     images: [
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723402978/gorental/demo/cars/biq5bagxwty4evbdsiac.jpg',
-        public_id: 'gorental/demo/cars/biq5bagxwty4evbdsiac',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Audi/A4/10548/1757137106350/front-left-side-47.jpg?tr=w-420',
+        public_id: 'external/audi-a4-1',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723402978/gorental/demo/cars/imkqapuaa3mutfpgudsr.webp',
-        public_id: 'gorental/demo/cars/imkqapuaa3mutfpgudsr',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Audi/A4/10548/1732257078935/grille-97.jpg?tr=w-420',
+        public_id: 'external/audi-a4-2',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723402982/gorental/demo/cars/fi9jfdbyxnwrkxqsa5le.jpg',
-        public_id: 'gorental/demo/cars/fi9jfdbyxnwrkxqsa5le',
+        url: 'https://stimg.cardekho.com/images/carinteriorimages/930x620/Audi/A4/10548/1732257124660/dashboard-59.jpg?tr=w-420',
+        public_id: 'external/audi-a4-3',
       },
     ],
     year: 2012,
@@ -40,12 +40,16 @@ export const cars = [
     address: '128-94 Sussex St, Buffalo, NY 14215, USA',
     images: [
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723403174/gorental/demo/cars/ndqlknmzi0adx2h6kgz1.jpg',
-        public_id: 'gorental/demo/cars/ndqlknmzi0adx2h6kgz1',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/BMW/3-Series/10574/1761732994122/front-left-side-47.jpg?tr=w-420',
+        public_id: 'external/bmw-3-series-1',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723403179/gorental/demo/cars/g97qvzpc7gquivemuisd.jpg',
-        public_id: 'gorental/demo/cars/g97qvzpc7gquivemuisd',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/BMW/3-Series/10574/1761732994122/side-view-(left)-90.jpg?tr=w-420',
+        public_id: 'external/bmw-3-series-2',
+      },
+      {
+        url: 'https://stimg.cardekho.com/images/carinteriorimages/930x620/BMW/3-Series/10574/1761734020865/dashboard-59.jpg?tr=w-420',
+        public_id: 'external/bmw-3-series-3',
       },
     ],
     year: 2015,
@@ -68,16 +72,16 @@ export const cars = [
     address: '198-74 Andover Ave, Buffalo, NY 14215, USA',
     images: [
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723403378/gorental/demo/cars/oycmlqwxmknul6ffxbuj.jpg',
-        public_id: 'gorental/demo/cars/oycmlqwxmknul6ffxbuj',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Ford/Mustang-2024/7939/1663750110692/front-left-side-47.jpg?tr=w-420',
+        public_id: 'external/ford-mustang-1',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723403375/gorental/demo/cars/uatc1wqn9s7vefzy0eb7.jpg',
-        public_id: 'gorental/demo/cars/uatc1wqn9s7vefzy0eb7',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Ford/Mustang-2024/7939/1663750110692/side-view-(left)-90.jpg?tr=w-420',
+        public_id: 'external/ford-mustang-2',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723403384/gorental/demo/cars/rfm0dmuscisihcs8fwxd.jpg',
-        public_id: 'gorental/demo/cars/rfm0dmuscisihcs8fwxd',
+        url: 'https://stimg.cardekho.com/images/carinteriorimages/930x620/Ford/Mustang-2024/7939/1663749911591/interior-image-207.jpg?tr=w-420',
+        public_id: 'external/ford-mustang-3',
       },
     ],
     year: 2009,
@@ -100,16 +104,16 @@ export const cars = [
     address: '1399 E Esther St, Orlando, FL 32806, USA',
     images: [
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723403586/gorental/demo/cars/qack07k62sapezixwl0t.jpg',
-        public_id: 'gorental/demo/cars/qack07k62sapezixwl0t',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Honda/Civic/7742/1597221770778/front-view-118.jpg?tr=w-420',
+        public_id: 'external/honda-civic-1',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723403587/gorental/demo/cars/tfntmebom3javn6h98qe.avif',
-        public_id: 'gorental/demo/cars/tfntmebom3javn6h98qe',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Honda/Civic/7742/1597221770778/side-view-(left)-90.jpg?tr=w-420',
+        public_id: 'external/honda-civic-2',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723403608/gorental/demo/cars/w2lsdwqo3zhzmhe7moun.jpg',
-        public_id: 'gorental/demo/cars/w2lsdwqo3zhzmhe7moun',
+        url: 'https://stimg.cardekho.com/images/carinteriorimages/930x620/Honda/Civic/7740/1585801377472/dashboard-59.jpg?tr=w-420',
+        public_id: 'external/honda-civic-3',
       },
     ],
     year: 2011,
@@ -132,12 +136,16 @@ export const cars = [
     address: '3501 Shamrock Ct, Orlando, FL 32806, USA',
     images: [
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723403794/gorental/demo/cars/htfvzg0oyda2vtdor4gg.webp',
-        public_id: 'gorental/demo/cars/htfvzg0oyda2vtdor4gg',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Hyundai/Hyundai-Sonata/3786/front-view-118.jpg?tr=w-420',
+        public_id: 'external/hyundai-sonata-1',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723403794/gorental/demo/cars/ibrizzgguyjqhtcnyqfu.jpg',
-        public_id: 'gorental/demo/cars/ibrizzgguyjqhtcnyqfu',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Hyundai/Hyundai-Sonata/3786/1550818328967/front-left-side-47.jpg?tr=w-420',
+        public_id: 'external/hyundai-sonata-2',
+      },
+      {
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Hyundai/Hyundai-Sonata/3786/side-view-(left)-90.jpg?tr=w-420',
+        public_id: 'external/hyundai-sonata-3',
       },
     ],
     year: 2017,
@@ -160,12 +168,16 @@ export const cars = [
     address: '5910 Boca Raton Dr, Dallas, TX 75230, USA',
     images: [
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723404025/gorental/demo/cars/djge3pem8mqt6g88yfxf.jpg',
-        public_id: 'gorental/demo/cars/djge3pem8mqt6g88yfxf',
+        url: 'https://cdcssl.ibsrv.net/autodata/images/?img=CDC_2026NIC042008864.jpg&width=536',
+        public_id: 'external/nissan-altima-1',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723404025/gorental/demo/cars/u6zferximo1gi5enck1j.jpg',
-        public_id: 'gorental/demo/cars/u6zferximo1gi5enck1j',
+        url: 'https://cdcssl.ibsrv.net/autodata/images/?img=CDC_CC_615F5F_2026NIC042079934.jpg&width=536',
+        public_id: 'external/nissan-altima-2',
+      },
+      {
+        url: 'https://cdcssl.ibsrv.net/autodata/images/?img=CDC_2026NIC042079909.jpg&width=536',
+        public_id: 'external/nissan-altima-3',
       },
     ],
     year: 2015,
@@ -188,12 +200,16 @@ export const cars = [
     address: '6992 Lavendale Ave, Dallas, TX 75230, USA',
     images: [
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723404184/gorental/demo/cars/sn8cxt0cnuadncitb8yx.jpg',
-        public_id: 'gorental/demo/cars/sn8cxt0cnuadncitb8yx',
+        url: 'https://imgd.aeplcdn.com/370x208/cw/ec/26588/Toyota-Corolla-Altis-Exterior-123819.jpg?wm=0&q=80',
+        public_id: 'external/toyota-corolla-1',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723404185/gorental/demo/cars/pw5jinhnj6ljhpuwejsn.jpg',
-        public_id: 'gorental/demo/cars/pw5jinhnj6ljhpuwejsn',
+        url: 'https://imgd.aeplcdn.com/370x208/cw/ec/26588/Toyota-Corolla-Altis-Exterior-123820.jpg?wm=0&q=80',
+        public_id: 'external/toyota-corolla-2',
+      },
+      {
+        url: 'https://imgd.aeplcdn.com/370x208/cw/ec/26588/Toyota-Corolla-Altis-Interior-123821.jpg?wm=0&q=80',
+        public_id: 'external/toyota-corolla-3',
       },
     ],
     year: 2010,
@@ -216,12 +232,16 @@ export const cars = [
     address: '5667 Boaz St, Dallas, TX 75209, USA',
     images: [
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723404320/gorental/demo/cars/batozhqurlnho0c9ptox.jpg',
-        public_id: 'gorental/demo/cars/batozhqurlnho0c9ptox',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Audi/Q5/10556/1757140951323/front-left-side-47.jpg?tr=w-420',
+        public_id: 'external/audi-q5-1',
       },
       {
-        url: 'https://res.cloudinary.com/shopitnow-udemy/image/upload/v1723404321/gorental/demo/cars/y1wcdb9zar49ywksyoom.jpg',
-        public_id: 'gorental/demo/cars/y1wcdb9zar49ywksyoom',
+        url: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Audi/Q5/10556/1689594416925/side-view-(left)-90.jpg?tr=w-420',
+        public_id: 'external/audi-q5-2',
+      },
+      {
+        url: 'https://stimg.cardekho.com/images/carinteriorimages/930x620/Audi/Q5/10556/1689594301343/dashboard-59.jpg?tr=w-420',
+        public_id: 'external/audi-q5-3',
       },
     ],
     year: 2017,
