@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeftRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { ICar } from '@gorent/shared';
+import LoadingSpinner from '@/components/layout/LoadingSpinner';
 
 type Props = {
   cars: ICar[];
@@ -12,7 +13,7 @@ type Props = {
 
 const ListHomeCars = ({ cars, loading }: Props) => {
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner fullScreen={true} size={60} />;
   }
 
   return (
