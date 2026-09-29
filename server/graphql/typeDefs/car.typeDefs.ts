@@ -52,7 +52,7 @@ export const carTypeDefs = gql`
   }
 
   type Query {
-    getAllCars: [Car]
+    getAllCars(query: String): [Car]
     getCarById(carId: ID!): Car
   }
 

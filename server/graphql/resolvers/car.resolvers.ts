@@ -9,8 +9,9 @@ import { CarInput } from '../../types/car.types';
 
 export const carResolvers = {
   Query: {
-    getAllCars: async (parent: any, args: any, context: any) => await getAllCars(),
-    getCarById: async (parent: any, { carId }: { carId: string }, context: any) =>
+    getAllCars: async (parent: any, { query }: { query: string }, context: any) =>
+      await getAllCars(query),
+    getCarById: async (_: any, { carId }: { carId: string }, context: any) =>
       await getCarById(carId),
   },
   Mutation: {
