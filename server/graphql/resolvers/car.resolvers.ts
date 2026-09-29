@@ -11,9 +11,9 @@ export const carResolvers = {
   Query: {
     getAllCars: async (
       parent: any,
-      { filters, query }: { filters: CarFilters; query: string },
+      { page, filters, query }: { page: number; filters: CarFilters; query: string },
       context: any,
-    ) => await getAllCars(filters, query),
+    ) => await getAllCars(page, filters, query),
     getCarById: async (_: any, { carId }: { carId: string }, context: any) =>
       await getCarById(carId),
   },
