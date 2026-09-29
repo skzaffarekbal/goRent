@@ -15,15 +15,15 @@ interface Props {
 }
 
 export function CarImagesSlider({ images }: Props) {
-  const plugin = React.useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
+  const plugin = React.useMemo(() => Autoplay({ delay: 2000, stopOnInteraction: true }), []);
 
   return (
     <div className='w-full px-4'>
       <Carousel
-        plugins={[plugin.current]}
+        plugins={[plugin]}
         className='mx-5'
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
+        onMouseEnter={plugin.stop}
+        onMouseLeave={plugin.reset}
       >
         <CarouselContent>
           {images.length === 0 ? (

@@ -32,7 +32,7 @@ const ListHomeCars = ({ cars, loading }: Props) => {
         </div>
       </CardHeader>
       <div className='text-sm text-muted-foreground'>
-        {cars?.map((car: any) => (
+        {cars?.map((car: ICar) => (
           <CardItem key={car.id} car={car} />
         ))}
       </div>
