@@ -2,10 +2,16 @@ import Car from '../models/car.model';
 import { CarFilters, CarInput } from '../types/car.types';
 import APIFilters from '../utils/apiFilters';
 
-export const getAllCars = async (filters: CarFilters, query: string) => {
+export const getAllCars = async (page: string | number, filters: CarFilters, query: string) => {
+  const resPerPage = 3;
   const apiFilter = new APIFilters(Car).search(query).filters(filters);
-  const cars = await apiFilter.model;
-  return cars;
+  let cars = await apiFilter.model;
+  const totalCount = cars.length;
+
+  apiFilter.pagination(page, resPerPage);
+  cars = await apiFilter.model.clone();
+
+  return { cars, pagination: { totalCount, resPerPage } };
 };
 
 export const createCar = async (carInput: CarInput) => {
