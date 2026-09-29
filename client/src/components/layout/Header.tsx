@@ -8,7 +8,7 @@ import {
   SheetDescription,
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { CarTaxiFront, MenuIcon } from 'lucide-react';
+import { MenuIcon } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,8 +22,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 const Header = () => {
   return (
     <div className='flex items-center justify-between px-5 py-2 bg-white dark:bg-gray-800 border'>
-      <Link to='/' className='flex items-center gap-2'>
-        <CarTaxiFront className='h-8 w-8' />
+      <Link to='/' className='flex items-center gap-0'>
+        {/* <CarTaxiFront className='h-8 w-8' /> */}
+        <img src='/go-rent-car-logo.svg' className='h-10 w-10 object-contain' alt='logo' />
         <span className='text-lg font-semibold'>GoRent</span>
       </Link>
       <div className='hidden lg:flex gap-4 mr-1'>
