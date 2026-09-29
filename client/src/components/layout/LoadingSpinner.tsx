@@ -4,7 +4,7 @@ import { Loader } from 'lucide-react';
 type Props = {
   size?: number;
   className?: string;
-  fullScreen?: Boolean;
+  fullScreen?: boolean;
 };
 
 const LoadingSpinner = ({ size = 5, className, fullScreen = false }: Props) => {
