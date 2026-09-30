@@ -1,15 +1,36 @@
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Search } from 'lucide-react';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { updateSearchParams } from '@/utils/helpers';
-import { Search } from 'lucide-react';
-import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { CarBrand, CarCategories, CarFuelTypes, CarTransmissions } from '@gorent/shared';
 
 const Filters = () => {
-  const [searchQuery, setSearchQuery] = useState('');
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({
+    category: searchParams.get('category'),
+    brand: searchParams.get('brand'),
+    transmission: searchParams.get('transmission'),
+    fuelType: searchParams.get('fuelType'),
+  });
+
+  useEffect(() => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) {
+        newSearchParams.set(key, value);
+      } else {
+        newSearchParams.delete(key);
+      }
+    });
+    const path = `${window.location.pathname}?${newSearchParams.toString()}`;
+    navigate(path);
+  }, [filters, navigate, searchParams]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,18 +39,22 @@ const Filters = () => {
     navigate(path);
   };
 
-  const carCategories = ['Sedan', 'SUV', 'Coupe', 'Convertible'];
-  const carBrands = ['Toyota', 'Honda', 'Ford', 'Chevrolet'];
-  const carTransmissions = ['Automatic', 'Manual'];
+  const handleCheckboxChange = (type: string, value: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [type]: prevFilters[type] === value ? null : value,
+    }));
+  };
+
   return (
     <div>
       <Card>
         <CardHeader className='flex flex-row items-start bg-muted/25'>
           <div className='grid gap-0.5'>
             <div className='text-sm text-muted-foreground'>
-              <div className='filter-section my-8'>
+              <div className='filter-section my-3'>
                 <form onSubmit={handleSubmit}>
-                  <h2 className='text-xl font-bold mt-4 my-2'>Type keyword</h2>
+                  <h2 className='text-xl font-bold my-2'>Type keyword</h2>
                   <div className='relative ml-auto flex-1 md:grow-0'>
                     <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
                     <Input
@@ -43,11 +68,17 @@ const Filters = () => {
                 </form>
               </div>
 
-              <div className='filter-section my-8'>
+              <div className='filter-section my-3'>
                 <h2 className='text-xl font-bold mt-4 my-3'>Car Type</h2>
-                {carCategories?.map((category) => (
+                {CarCategories?.map((category) => (
                   <div key={category} className='flex items-center space-x-2 my-2'>
-                    <Checkbox id='category' name='category' value={category} />
+                    <Checkbox
+                      id='category'
+                      name='category'
+                      value={category}
+                      checked={filters?.category === category}
+                      onCheckedChange={() => handleCheckboxChange('category', category)}
+                    />
                     <label
                       htmlFor='carType'
                       className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
@@ -58,11 +89,17 @@ const Filters = () => {
                 ))}
               </div>
 
-              <div className='filter-section my-8'>
+              <div className='filter-section my-3'>
                 <h2 className='text-xl font-bold mt-4 my-3'>Select Brand</h2>
-                {carBrands?.map((brand) => (
+                {CarBrand?.map((brand) => (
                   <div key={brand} className='flex items-center space-x-2 my-2'>
-                    <Checkbox id='brand' name='brand' value={brand} />
+                    <Checkbox
+                      id='brand'
+                      name='brand'
+                      value={brand}
+                      checked={filters?.brand === brand}
+                      onCheckedChange={() => handleCheckboxChange('brand', brand)}
+                    />
                     <label
                       htmlFor='carBrand'
                       className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
@@ -73,16 +110,43 @@ const Filters = () => {
                 ))}
               </div>
 
-              <div className='filter-section my-8'>
+              <div className='filter-section my-3'>
                 <h2 className='text-xl font-bold mt-4 my-3'>Transmission</h2>
-                {carTransmissions?.map((transmission) => (
+                {CarTransmissions?.map((transmission) => (
                   <div key={transmission} className='flex items-center space-x-2 my-2'>
-                    <Checkbox id='transmission' name='transmission' value={transmission} />
+                    <Checkbox
+                      id='transmission'
+                      name='transmission'
+                      value={transmission}
+                      checked={filters?.transmission === transmission}
+                      onCheckedChange={() => handleCheckboxChange('transmission', transmission)}
+                    />
                     <label
                       htmlFor='carTransmission'
                       className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
                     >
                       {transmission}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              <div className='filter-section my-3'>
+                <h2 className='text-xl font-bold mt-4 my-3'>Fuel Type</h2>
+                {CarFuelTypes?.map((fuelType) => (
+                  <div key={fuelType} className='flex items-center space-x-2 my-2'>
+                    <Checkbox
+                      id='fuelType'
+                      name='fuelType'
+                      value={fuelType}
+                      checked={filters?.fuelType === fuelType}
+                      onCheckedChange={() => handleCheckboxChange('fuelType', fuelType)}
+                    />
+                    <label
+                      htmlFor='carFuelType'
+                      className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                    >
+                      {fuelType}
                     </label>
                   </div>
                 ))}

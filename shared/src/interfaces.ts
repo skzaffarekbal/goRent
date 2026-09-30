@@ -9,28 +9,8 @@ export const CarBrand = [
   'Toyota',
   'Mercedes-Benz',
   'Volkswagen',
-  'Porsche',
-  'Kia',
-  'Mazda',
-  'Subaru',
-  'Lexus',
-  'Infiniti',
-  'Jaguar',
-  'Land Rover',
 ] as const;
-export const CarCategories = [
-  'Sedan',
-  'Convertible',
-  'SUV',
-  'Hatchback',
-  'Coupe',
-  'Pickup',
-  'Van',
-  'Truck',
-  'Minivan',
-  'Wagon',
-  'Jeep',
-] as const;
+export const CarCategories = ['Sedan', 'Convertible', 'SUV', 'Hatchback', 'Coupe'] as const;
 export const CarFuelTypes = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'CNG'] as const;
 export const CarTransmissions = ['Automatic', 'Manual', 'CVT'] as const;
 export const CarDoors = [2, 4, 5, 6] as const;

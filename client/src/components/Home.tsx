@@ -8,8 +8,23 @@ import { useSearchParams } from 'react-router-dom';
 const Home = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
+
+  const category = searchParams.get('category');
+  const brand = searchParams.get('brand');
+  const transmission = searchParams.get('transmission');
+  const fuelType = searchParams.get('fuelType');
+
+  const filters = {
+    status: 'Active',
+    ...(category && { category }),
+    ...(brand && { brand }),
+    ...(transmission && { transmission }),
+    ...(fuelType && { fuelType }),
+  };
+
   const variables = {
     query,
+    filters,
   };
 
   const { loading, error, data } = useQuery<{
