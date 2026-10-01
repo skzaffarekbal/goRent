@@ -5,13 +5,15 @@ import { ArrowLeftRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { ICar } from '@gorent/shared';
 import LoadingSpinner from '@/components/layout/LoadingSpinner';
+import CustomPagination from '../layout/CustomPagination';
 
 type Props = {
   cars: ICar[];
   loading: boolean;
+  pagination?: { resPerPage: number; totalCount: number };
 };
 
-const ListHomeCars = ({ cars, loading }: Props) => {
+const ListHomeCars = ({ cars, loading, pagination }: Props) => {
   if (loading) {
     return <LoadingSpinner fullScreen={true} size={60} />;
   }
@@ -36,6 +38,9 @@ const ListHomeCars = ({ cars, loading }: Props) => {
           <CardItem key={car.id} car={car} />
         ))}
       </div>
+      {pagination?.totalCount > pagination?.resPerPage && (
+        <CustomPagination totalCount={pagination.totalCount} resPerPage={pagination.resPerPage} />
+      )}
     </>
   );
 };

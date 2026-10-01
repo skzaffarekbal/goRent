@@ -14,6 +14,8 @@ const Home = () => {
   const transmission = searchParams.get('transmission');
   const fuelType = searchParams.get('fuelType');
 
+  const page = Number(searchParams.get('page')) || 1;
+
   const filters = {
     status: 'Active',
     ...(category && { category }),
@@ -25,6 +27,7 @@ const Home = () => {
   const variables = {
     query,
     filters,
+    page,
   };
 
   const { loading, error, data } = useQuery<{
@@ -41,7 +44,11 @@ const Home = () => {
         <Filters />
       </div>
       <div className='grid auto-rows-max items-start gap-4 md:gap-8 md:col-span-4 lg:col-span-4 flex flex-col'>
-        <ListHomeCars cars={data?.getAllCars?.cars} loading={loading} />
+        <ListHomeCars
+          cars={data?.getAllCars?.cars}
+          loading={loading}
+          pagination={data?.getAllCars?.pagination}
+        />
       </div>
       <div className='md:col-span-6 lg:col-span-4 flex flex-col'>
         <div className='flex items-center justify-center h-screen'></div>
