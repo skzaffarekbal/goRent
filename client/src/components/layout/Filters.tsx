@@ -28,9 +28,12 @@ const Filters = () => {
         newSearchParams.delete(key);
       }
     });
+    if (searchQuery === '') {
+      newSearchParams.delete('query');
+    }
     const path = `${window.location.pathname}?${newSearchParams.toString()}`;
     navigate(path);
-  }, [filters, navigate, searchParams]);
+  }, [filters, navigate, searchParams, searchQuery]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
