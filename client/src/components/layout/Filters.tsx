@@ -12,28 +12,21 @@ const Filters = () => {
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState({
+
+  const filters = {
     category: searchParams.get('category'),
     brand: searchParams.get('brand'),
     transmission: searchParams.get('transmission'),
     fuelType: searchParams.get('fuelType'),
-  });
+  };
 
   useEffect(() => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value) {
-        newSearchParams.set(key, value);
-      } else {
-        newSearchParams.delete(key);
-      }
-    });
     if (searchQuery === '') {
-      newSearchParams.delete('query');
+      searchParams.delete('query');
     }
-    const path = `${window.location.pathname}?${newSearchParams.toString()}`;
+    const path = `${window.location.pathname}?${searchParams.toString()}`;
     navigate(path);
-  }, [filters, navigate, searchParams, searchQuery]);
+  }, [navigate, searchParams, searchQuery]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,10 +36,17 @@ const Filters = () => {
   };
 
   const handleCheckboxChange = (type: string, value: string) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [type]: prevFilters[type] === value ? null : value,
-    }));
+    const isCurrentValue = filters[type as keyof typeof filters] === value;
+    const nextValue = isCurrentValue ? null : value;
+
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (!nextValue) {
+      newSearchParams.delete(type);
+    } else {
+      newSearchParams.set(type, nextValue);
+    }
+    const path = `${window.location.pathname}?${newSearchParams.toString()}`;
+    navigate(path);
   };
 
   return (
