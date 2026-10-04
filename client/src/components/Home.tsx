@@ -4,8 +4,11 @@ import { useQuery } from '@apollo/client/react';
 import { GET_ALL_CARS } from '@/graphql/queries/car.queries';
 import type { ICar } from '@gorent/shared';
 import { useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
+import { errorToast } from '@/utils/helpers';
 
 const Home = () => {
+  const [lastError, setLastError] = useState(null);
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query');
 
@@ -35,6 +38,13 @@ const Home = () => {
   }>(GET_ALL_CARS, {
     variables,
   });
+
+  if (error && error !== lastError) {
+    setLastError(error);
+    errorToast(error);
+  } else if (!error && lastError) {
+    setLastError(null);
+  }
 
   console.log('Error :', error);
 

@@ -4,9 +4,11 @@ import './index.css';
 import App from './App.tsx';
 import { ApolloProvider } from '@apollo/client/react';
 import client from './apollo/apolloClient';
+import { Toaster } from 'sonner';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <Toaster />
     <ApolloProvider client={client}>
       <App />
     </ApolloProvider>
