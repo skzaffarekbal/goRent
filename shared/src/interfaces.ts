@@ -16,6 +16,25 @@ export const CarTransmissions = ['Automatic', 'Manual', 'CVT'] as const;
 export const CarDoors = [2, 4, 5, 6] as const;
 export const CarSeats = [2, 4, 5, 7, 8, 9, 10, 12, 15] as const;
 
+export const UserRoles = ['user', 'admin'] as const;
+
+export interface IUser {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  phone: number;
+  role?: string[];
+  avatar?: {
+    public_id: string;
+    url: string;
+  };
+  resetPasswordToken: string | undefined;
+  resetPasswordExpire: Date | undefined;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ICar {
   id: string;
   name: string;
