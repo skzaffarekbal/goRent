@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema<IUser>(
       select: false,
     },
     phone: {
-      type: Number,
+      type: String,
       required: [true, 'Please enter your phone number'],
     },
     role: {

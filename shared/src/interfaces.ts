@@ -23,7 +23,7 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  phone: number;
+  phone: string;
   role?: string[];
   avatar?: {
     public_id: string;
