@@ -5,10 +5,12 @@ import cors from 'cors';
 import { Application, json } from 'express';
 import { carTypeDefs } from '../graphql/typeDefs/car.typeDefs';
 import { carResolvers } from '../graphql/resolvers/car.resolvers';
+import { userTypeDefs } from '../graphql/typeDefs/user.typeDefs';
+import { userResolvers } from '../graphql/resolvers/user.resolvers';
 
 export async function startApolloServer(app: Application) {
-  const typeDefs = [carTypeDefs];
-  const resolvers = [carResolvers];
+  const typeDefs = [carTypeDefs, userTypeDefs];
+  const resolvers = [carResolvers, userResolvers];
 
   const schema = makeExecutableSchema({
     typeDefs,
