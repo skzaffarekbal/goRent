@@ -30,5 +30,6 @@ export const userTypeDefs = gql`
 
   type Mutation {
     registerUser(userInput: UserInput!): User
+    login(email: String!, password: String!): User
   }
 `;
