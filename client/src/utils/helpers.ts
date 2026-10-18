@@ -14,3 +14,12 @@ export const errorToast = (error: unknown) => {
     description: (error as Error)?.message || 'An unexpected error occurred.',
   });
 };
+
+export const errorWrapper = async <T>(fn: () => Promise<T> | T): Promise<T | undefined> => {
+  try {
+    return await fn();
+  } catch (error) {
+    console.log('Error: ', error);
+    errorToast(error);
+  }
+};
