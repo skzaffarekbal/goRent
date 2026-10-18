@@ -14,8 +14,10 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterUserSchema } from '@/zod-schemas/user.schemas';
 
+type RegisterUserInput = z.infer<typeof RegisterUserSchema>;
+
 const Register = () => {
-  const form = useForm<z.infer<typeof RegisterUserSchema>>({
+  const form = useForm<RegisterUserInput>({
     resolver: zodResolver(RegisterUserSchema),
     defaultValues: {
       name: '',
@@ -31,7 +33,7 @@ const Register = () => {
     },
   });
 
-  const submitHandler = async (values: z.infer<typeof RegisterUserSchema>) => {
+  const submitHandler = async (values: RegisterUserInput) => {
     const userInput = {
       name: values?.name,
       email: values?.email,
@@ -142,7 +144,7 @@ const Register = () => {
             <div className='mt-4 text-center text-sm'>
               Already have an account?{' '}
               <Link to='/login' className='underline'>
-                Sign in
+                Log in
               </Link>
             </div>
           </CardContent>
