@@ -5,6 +5,7 @@ import Home from '@/components/Home';
 import CarDetails from '@/components/car/CarDetails';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import Register from './components/auth/Register';
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/car/:id' element={<CarDetails />} />
+        <Route path='/register' element={<Register />} />
+        {/* <Route path='/login' element={<Login />} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>
