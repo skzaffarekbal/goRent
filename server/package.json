@@ -27,6 +27,8 @@
     "cors": "^2.8.6",
     "dotenv": "^18.0.3",
     "express": "^5.2.1",
+    "graphql-middleware": "^6.1.35",
+    "graphql-shield": "^7.6.5",
     "graphql-tag": "^2.12.7",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.10.2"

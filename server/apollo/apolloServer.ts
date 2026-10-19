@@ -7,6 +7,8 @@ import { carTypeDefs } from '../graphql/typeDefs/car.typeDefs';
 import { carResolvers } from '../graphql/resolvers/car.resolvers';
 import { userTypeDefs } from '../graphql/typeDefs/user.typeDefs';
 import { userResolvers } from '../graphql/resolvers/user.resolvers';
+import { applyMiddleware } from 'graphql-middleware';
+import { permissions } from '../middlewares/permissions';
 
 export async function startApolloServer(app: Application) {
   const typeDefs = [carTypeDefs, userTypeDefs];
@@ -17,8 +19,10 @@ export async function startApolloServer(app: Application) {
     resolvers,
   });
 
+  const schemaWithMiddleware = applyMiddleware(schema, permissions);
+
   const apolloServer = new ApolloServer({
-    schema,
+    schema: schemaWithMiddleware,
   });
 
   await apolloServer.start();
