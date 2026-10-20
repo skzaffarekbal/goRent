@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
@@ -13,10 +14,22 @@ import { toast } from 'sonner';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginUserSchema } from '@/zod-schemas/user.schemas';
+import { useReactiveVar } from '@apollo/client/react';
+import { isAuthenticatedVar } from '@/apollo/apollo-vars';
 
 type LoginUserInput = z.infer<typeof LoginUserSchema>;
 
 const Login = () => {
+  const isAuthenticated = useReactiveVar(isAuthenticatedVar);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
+
   const form = useForm<LoginUserInput>({
     resolver: zodResolver(LoginUserSchema),
     defaultValues: {

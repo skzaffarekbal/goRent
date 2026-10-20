@@ -1,11 +1,12 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { MailPlus } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
-import { useMutation } from '@apollo/client/react';
+import { useMutation, useReactiveVar } from '@apollo/client/react';
 import { REGISTER_USER_MUTATION } from '@/graphql/mutations/user.mutations';
 import LoadingSpinner from '../layout/LoadingSpinner';
 import { errorWrapper } from '@/utils/helpers';
@@ -13,10 +14,21 @@ import { toast } from 'sonner';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterUserSchema } from '@/zod-schemas/user.schemas';
+import { isAuthenticatedVar } from '@/apollo/apollo-vars';
 
 type RegisterUserInput = z.infer<typeof RegisterUserSchema>;
 
 const Register = () => {
+  const isAuthenticated = useReactiveVar(isAuthenticatedVar);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
+
   const form = useForm<RegisterUserInput>({
     resolver: zodResolver(RegisterUserSchema),
     defaultValues: {

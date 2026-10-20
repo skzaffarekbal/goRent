@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Sheet,
@@ -17,9 +18,29 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { CURRENT_USER } from '@/graphql/queries/user.queries';
+import { useQuery } from '@apollo/client/react';
+import { isAuthenticatedVar, isLoadingVar, userVar } from '@/apollo/apollo-vars';
+import type { IUser } from '@gorent/shared';
 // import AdminMobileMenu from '../mobile-menu/AdminMobileMenu';
 
 const Header = () => {
+  const { data, error } = useQuery<{ me: IUser }>(CURRENT_USER);
+
+  useEffect(() => {
+    if (error) {
+      userVar(null);
+      isLoadingVar(false);
+      isAuthenticatedVar(false);
+    }
+
+    if (data) {
+      userVar(data?.me);
+      isAuthenticatedVar(true);
+      isLoadingVar(false);
+    }
+  }, [data, error]);
+
   return (
     <div className='flex items-center justify-between px-5 py-2 bg-white dark:bg-gray-800 border'>
       <Link to='/' className='flex items-center gap-0'>
