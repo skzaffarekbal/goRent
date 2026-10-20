@@ -9,6 +9,12 @@ import { userTypeDefs } from '../graphql/typeDefs/user.typeDefs';
 import { userResolvers } from '../graphql/resolvers/user.resolvers';
 import { applyMiddleware } from 'graphql-middleware';
 import { permissions } from '../middlewares/permissions';
+import jwt from 'jsonwebtoken';
+import User from '../models/user.model';
+
+interface CustomJwtPayload {
+  _id: string;
+}
 
 export async function startApolloServer(app: Application) {
   const typeDefs = [carTypeDefs, userTypeDefs];
@@ -35,10 +41,27 @@ export async function startApolloServer(app: Application) {
     }),
     json(),
     expressMiddleware(apolloServer, {
-      context: async ({ req, res }: { req: Request; res: Response }) => ({
-        req,
-        res,
-      }),
+      context: async ({ req, res }: { req: Request; res: Response }) => {
+        const token = req.cookies?.token;
+        let user = null;
+        if (token) {
+          try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as CustomJwtPayload;
+            user = await User.findById(decoded._id);
+
+            if (!user) {
+              throw new Error('User not found');
+            }
+          } catch (error) {
+            throw new Error('Invalid or expired token');
+          }
+        }
+        return {
+          req,
+          res,
+          user,
+        };
+      },
     }),
   );
 }

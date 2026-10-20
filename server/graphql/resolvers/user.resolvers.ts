@@ -4,8 +4,8 @@ import { UserInput } from '../../types/user.types';
 
 export const userResolvers = {
   Query: {
-    me: (_: any) => {
-      return 'Current User';
+    me: (_: any, __: any, { user }: { user: any }) => {
+      return user;
     },
   },
   Mutation: {
