@@ -1,11 +1,16 @@
 import { Response } from 'express';
 import { login, registerUser } from '../../controllers/user.controller';
 import { UserInput } from '../../types/user.types';
+import { IUser } from '@gorent/shared';
 
 export const userResolvers = {
   Query: {
-    me: (_: any, __: any, { user }: { user: any }) => {
+    me: (_: any, __: any, { user }: { user: IUser }) => {
       return user;
+    },
+    logout: (_: any, __: any, { res }: { res: Response }) => {
+      res.cookie('token', null, { maxAge: 0 });
+      return true;
     },
   },
   Mutation: {

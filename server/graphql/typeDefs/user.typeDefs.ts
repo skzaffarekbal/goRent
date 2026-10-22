@@ -26,6 +26,7 @@ export const userTypeDefs = gql`
 
   type Query {
     me: User
+    logout: Boolean
   }
 
   type Mutation {
