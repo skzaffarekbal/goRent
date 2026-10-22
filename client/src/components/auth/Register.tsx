@@ -15,6 +15,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterUserSchema } from '@/zod-schemas/user.schemas';
 import { isAuthenticatedVar } from '@/apollo/apollo-vars';
+import { CURRENT_USER } from '@/graphql/queries/user.queries';
 
 type RegisterUserInput = z.infer<typeof RegisterUserSchema>;
 
@@ -40,6 +41,7 @@ const Register = () => {
   });
 
   const [registerUser, { loading }] = useMutation(REGISTER_USER_MUTATION, {
+    refetchQueries: [{ query: CURRENT_USER }],
     onCompleted: () => {
       toast.success('User registered successfully.');
     },
