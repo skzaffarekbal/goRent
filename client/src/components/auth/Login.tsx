@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginUserSchema } from '@/zod-schemas/user.schemas';
 import { useReactiveVar } from '@apollo/client/react';
 import { isAuthenticatedVar } from '@/apollo/apollo-vars';
+import { CURRENT_USER } from '@/graphql/queries/user.queries';
 
 type LoginUserInput = z.infer<typeof LoginUserSchema>;
 
@@ -39,6 +40,7 @@ const Login = () => {
   });
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER_MUTATION, {
+    refetchQueries: [{ query: CURRENT_USER }],
     onCompleted: () => {
       toast.success('User logged in successfully.');
     },
