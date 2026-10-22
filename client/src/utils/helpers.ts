@@ -23,3 +23,15 @@ export const errorWrapper = async <T>(fn: () => Promise<T> | T): Promise<T | und
     errorToast(error);
   }
 };
+
+// John Doe -> JD
+export const getUserNameInitials = (fullname?: string) => {
+  if (!fullname) {
+    return 'U';
+  }
+  const names = fullname.split(' ');
+  return names
+    .map((name) => name[0])
+    .join('')
+    .toUpperCase();
+};
