@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Sheet,
   SheetTrigger,
@@ -18,8 +18,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { CURRENT_USER } from '@/graphql/queries/user.queries';
-import { useQuery } from '@apollo/client/react';
+import { CURRENT_USER, LOGOUT } from '@/graphql/queries/user.queries';
+import { useLazyQuery, useQuery } from '@apollo/client/react';
 import { isAuthenticatedVar, isLoadingVar, userVar } from '@/apollo/apollo-vars';
 import type { IUser } from '@gorent/shared';
 import { Skeleton } from '../ui/skeleton';
@@ -28,6 +28,7 @@ import { getUserNameInitials } from '@/utils/helpers';
 // import AdminMobileMenu from '../mobile-menu/AdminMobileMenu';
 
 const Header = () => {
+  const navigate = useNavigate();
   const { data, error, loading } = useQuery<{ me: IUser }>(CURRENT_USER);
 
   useEffect(() => {
@@ -45,6 +46,12 @@ const Header = () => {
   }, [data, error]);
 
   const currentUser = data?.me;
+
+  const [logout] = useLazyQuery<{ logout: boolean }>(LOGOUT);
+  const logoutHandler = async () => {
+    await logout();
+    navigate(0);
+  };
 
   return (
     <div className='flex items-center justify-between px-5 py-2 bg-white dark:bg-gray-800 border'>
@@ -84,7 +91,7 @@ const Header = () => {
                 <DropdownMenuItem>Profile</DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={logoutHandler}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
@@ -130,7 +137,11 @@ const Header = () => {
               <>
                 <UserMobileMenu isAdmin={currentUser?.role.includes('admin')} />
                 <DropdownMenuSeparator />
-                <Link to='#' className='text-lg font-medium hover:underline underline-offset-4'>
+                <Link
+                  to='#'
+                  onClick={logoutHandler}
+                  className='text-lg font-medium hover:underline underline-offset-4'
+                >
                   Logout
                 </Link>
               </>
