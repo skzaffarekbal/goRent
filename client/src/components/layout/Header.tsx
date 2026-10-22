@@ -22,10 +22,13 @@ import { CURRENT_USER } from '@/graphql/queries/user.queries';
 import { useQuery } from '@apollo/client/react';
 import { isAuthenticatedVar, isLoadingVar, userVar } from '@/apollo/apollo-vars';
 import type { IUser } from '@gorent/shared';
+import { Skeleton } from '../ui/skeleton';
+import UserMobileMenu from '../mobile-menu/UserMobileMenu';
+import { getUserNameInitials } from '@/utils/helpers';
 // import AdminMobileMenu from '../mobile-menu/AdminMobileMenu';
 
 const Header = () => {
-  const { data, error } = useQuery<{ me: IUser }>(CURRENT_USER);
+  const { data, error, loading } = useQuery<{ me: IUser }>(CURRENT_USER);
 
   useEffect(() => {
     if (error) {
@@ -41,6 +44,8 @@ const Header = () => {
     }
   }, [data, error]);
 
+  const currentUser = data?.me;
+
   return (
     <div className='flex items-center justify-between px-5 py-2 bg-white dark:bg-gray-800 border'>
       <Link to='/' className='flex items-center gap-0'>
@@ -49,34 +54,42 @@ const Header = () => {
         <span className='text-lg font-semibold'>GoRent</span>
       </Link>
       <div className='hidden lg:flex gap-4 mr-1'>
-        <Button className='mb-2' asChild>
-          <Link to='/login'>Login</Link>
-        </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='outline' size='icon' className='overflow-hidden rounded-full'>
-              <div className='flex items-center'>
-                <Avatar className='h-10 w-10'>
-                  <AvatarImage src='path/to/avatar.jpg' />
-                  <AvatarFallback>AB</AvatarFallback>
-                </Avatar>
-              </div>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <Link to='/admin/dashboard'>
-              <DropdownMenuItem>Dashboard</DropdownMenuItem>
-            </Link>
-            <Link to='/me/bookings'>
-              <DropdownMenuItem>My Bookings</DropdownMenuItem>
-            </Link>
-            <Link to='/me/profile'>
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-            </Link>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {!currentUser && !loading && (
+          <Button className='mb-2' asChild>
+            <Link to='/login'>Login</Link>
+          </Button>
+        )}
+        {currentUser ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline' size='icon' className='overflow-hidden rounded-full'>
+                <div className='flex items-center'>
+                  <Avatar className='h-10 w-10'>
+                    <AvatarImage src={currentUser?.avatar?.url} />
+                    <AvatarFallback>{getUserNameInitials(currentUser?.name)}</AvatarFallback>
+                  </Avatar>
+                </div>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              {currentUser?.role.includes('admin') && (
+                <Link to='/admin/dashboard'>
+                  <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                </Link>
+              )}
+              <Link to='/me/bookings'>
+                <DropdownMenuItem>My Bookings</DropdownMenuItem>
+              </Link>
+              <Link to='/me/profile'>
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Logout</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          loading && <Skeleton className='h-8 w-8 rounded-full' />
+        )}
       </div>
       <Sheet>
         <SheetTrigger asChild>
@@ -93,24 +106,35 @@ const Header = () => {
           <div className='grid w-[250px] p-4'>
             <div className='flex items-center mb-3'>
               <span className='me-4'></span>
-              <Button asChild>
-                <Link to='/login'>Login</Link>
-              </Button>
-              <Button variant='outline' size='icon' className='overflow-hidden rounded-full'>
-                <div className='flex items-center'>
-                  <Avatar className='h-10 w-10'>
-                    <AvatarImage src='path/to/avatar.jpg' />
-                    <AvatarFallback>AB</AvatarFallback>
-                  </Avatar>
-                </div>
-              </Button>
-              <p className='ps-2'>User Name</p>
+              {!currentUser && !loading && (
+                <Button asChild>
+                  <Link to='/login'>Login</Link>
+                </Button>
+              )}
+              {currentUser && (
+                <>
+                  <Button variant='outline' size='icon' className='overflow-hidden rounded-full'>
+                    <div className='flex items-center'>
+                      <Avatar className='h-10 w-10'>
+                        <AvatarImage src={currentUser?.avatar?.url} />
+                        <AvatarFallback>{getUserNameInitials(currentUser?.name)}</AvatarFallback>
+                      </Avatar>
+                    </div>
+                  </Button>
+                  <p className='ps-2'>{currentUser?.name}</p>
+                </>
+              )}
             </div>
             {/* <AdminMobileMenu /> */}
-            <DropdownMenuSeparator />
-            <Link to='#' className='text-lg font-medium hover:underline underline-offset-4'>
-              Logout
-            </Link>
+            {currentUser && (
+              <>
+                <UserMobileMenu isAdmin={currentUser?.role.includes('admin')} />
+                <DropdownMenuSeparator />
+                <Link to='#' className='text-lg font-medium hover:underline underline-offset-4'>
+                  Logout
+                </Link>
+              </>
+            )}
           </div>
         </SheetContent>
       </Sheet>
