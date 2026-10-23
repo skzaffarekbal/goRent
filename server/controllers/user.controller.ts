@@ -55,3 +55,17 @@ export const login = catchAsyncErrors(async (email: string, password: string, re
 
   return user;
 });
+
+export const updateUserProfile = catchAsyncErrors(
+  async (userData: Partial<UserInput>, userId: string) => {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    user?.set(userData).save();
+
+    return true;
+  },
+);

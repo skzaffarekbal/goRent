@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { login, registerUser } from '../../controllers/user.controller';
+import { login, registerUser, updateUserProfile } from '../../controllers/user.controller';
 import { UserInput } from '../../types/user.types';
 import { IUser } from '@gorent/shared';
 
@@ -23,6 +23,13 @@ export const userResolvers = {
       { res }: { res: Response },
     ) => {
       return login(email, password, res);
+    },
+    updateUserProfile: (
+      _: any,
+      { userInput }: { userInput: Partial<UserInput> },
+      { user }: { user: IUser },
+    ) => {
+      return updateUserProfile(userInput, user.id);
     },
   },
 };
