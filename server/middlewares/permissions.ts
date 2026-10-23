@@ -11,6 +11,12 @@ const isAdmin = rule({ cache: 'contextual' })(async (parent, args, context, info
 export const permissions = shield({
   Query: {
     me: isAuthenticated,
+    logout: isAuthenticated,
   },
-  Mutation: {},
+  Mutation: {
+    registerUser: allow,
+    login: allow,
+    updateUserProfile: isAuthenticated,
+    updatePassword: isAuthenticated,
+  },
 });

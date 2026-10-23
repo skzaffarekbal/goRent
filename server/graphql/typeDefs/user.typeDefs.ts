@@ -39,5 +39,6 @@ export const userTypeDefs = gql`
     registerUser(userInput: UserInput!): User
     login(email: String!, password: String!): User
     updateUserProfile(userInput: UpdateUserInput!): Boolean
+    updatePassword(oldPassword: String!, newPassword: String!): Boolean
   }
 `;
