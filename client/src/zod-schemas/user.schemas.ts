@@ -35,3 +35,16 @@ export const UpdateProfileSchema = z.object({
     .string({ required_error: 'Phone number is required' })
     .refine((val) => /^\d{10}$/.test(val), { message: 'Invalid phone number' }),
 });
+
+export const UpdatePasswordSchema = z
+  .object({
+    oldPassword: z.string({ required_error: 'Old password is required' }),
+    newPassword: z
+      .string({ required_error: 'New password is required' })
+      .min(6, { message: 'New password must be at least 6 characters long' }),
+    confirmPassword: z.string({ required_error: 'Confirm password is required' }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
