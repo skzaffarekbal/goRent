@@ -69,3 +69,24 @@ export const updateUserProfile = catchAsyncErrors(
     return true;
   },
 );
+
+export const updatePassword = catchAsyncErrors(
+  async (oldPassword: string, newPassword: string, userId: string) => {
+    const user = await User.findById(userId).select('+password');
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const isPasswordMatched = await bcrypt.compare(oldPassword, user?.password);
+
+    if (!isPasswordMatched) {
+      throw new Error('Old Password Is Incorrect');
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return true;
+  },
+);

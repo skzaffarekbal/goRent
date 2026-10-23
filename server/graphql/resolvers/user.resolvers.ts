@@ -1,5 +1,10 @@
 import { Response } from 'express';
-import { login, registerUser, updateUserProfile } from '../../controllers/user.controller';
+import {
+  login,
+  registerUser,
+  updatePassword,
+  updateUserProfile,
+} from '../../controllers/user.controller';
 import { UserInput } from '../../types/user.types';
 import { IUser } from '@gorent/shared';
 
@@ -30,6 +35,13 @@ export const userResolvers = {
       { user }: { user: IUser },
     ) => {
       return updateUserProfile(userInput, user.id);
+    },
+    updatePassword: (
+      _: any,
+      { oldPassword, newPassword }: { oldPassword: string; newPassword: string },
+      { user }: { user: IUser },
+    ) => {
+      return updatePassword(oldPassword, newPassword, user.id);
     },
   },
 };
