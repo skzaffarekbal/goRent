@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import UpdatePassword from './UpdatePassword';
 import UpdateProfile from './UpdateProfile';
+import UploadAvatar from './UploadAvatar';
 
 const Profile = () => {
   return (
@@ -17,7 +18,9 @@ const Profile = () => {
         <TabsContent value='password'>
           <UpdatePassword />
         </TabsContent>
-        <TabsContent value='avatar'></TabsContent>
+        <TabsContent value='avatar'>
+          <UploadAvatar />
+        </TabsContent>
       </Tabs>
     </main>
   );
