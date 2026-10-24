@@ -8,15 +8,18 @@ const isAdmin = rule({ cache: 'contextual' })(async (parent, args, context, info
   return context.user.role.includes('admin');
 });
 
-export const permissions = shield({
-  Query: {
-    me: isAuthenticated,
-    logout: isAuthenticated,
+export const permissions = shield(
+  {
+    Query: {
+      me: isAuthenticated,
+      logout: isAuthenticated,
+    },
+    Mutation: {
+      registerUser: allow,
+      login: allow,
+      updateUserProfile: isAuthenticated,
+      updatePassword: isAuthenticated,
+    },
   },
-  Mutation: {
-    registerUser: allow,
-    login: allow,
-    updateUserProfile: isAuthenticated,
-    updatePassword: isAuthenticated,
-  },
-});
+  { debug: true },
+);
