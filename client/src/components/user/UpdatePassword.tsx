@@ -25,14 +25,12 @@ const UpdatePassword = () => {
     },
   });
 
-  const [updatePassword, { loading, error }] = useMutation(UPDATE_PASSWORD_MUTATION, {
+  const [updatePassword, { loading }] = useMutation(UPDATE_PASSWORD_MUTATION, {
     refetchQueries: [{ query: CURRENT_USER }],
     onCompleted: () => {
       toast.success('Password Updated Successfully.');
     },
   });
-
-  console.log('Hello', error);
 
   const submitHandler = async (values: UpdatePasswordInput) => {
     const passwordInput = {
