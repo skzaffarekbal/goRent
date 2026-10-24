@@ -4,6 +4,7 @@ import {
   registerUser,
   updatePassword,
   updateUserProfile,
+  uploadUserAvatar,
 } from '../../controllers/user.controller';
 import { UserInput } from '../../types/user.types';
 import { IUser } from '@gorent/shared';
@@ -19,29 +20,24 @@ export const userResolvers = {
     },
   },
   Mutation: {
-    registerUser: (_: any, { userInput }: { userInput: UserInput }, { res }: { res: Response }) => {
-      return registerUser(userInput, res);
-    },
+    registerUser: (_: any, { userInput }: { userInput: UserInput }, { res }: { res: Response }) =>
+      registerUser(userInput, res),
     login: (
       _: any,
       { email, password }: { email: string; password: string },
       { res }: { res: Response },
-    ) => {
-      return login(email, password, res);
-    },
+    ) => login(email, password, res),
     updateUserProfile: (
       _: any,
       { userInput }: { userInput: Partial<UserInput> },
       { user }: { user: IUser },
-    ) => {
-      return updateUserProfile(userInput, user.id);
-    },
+    ) => updateUserProfile(userInput, user.id),
     updatePassword: (
       _: any,
       { oldPassword, newPassword }: { oldPassword: string; newPassword: string },
       { user }: { user: IUser },
-    ) => {
-      return updatePassword(oldPassword, newPassword, user.id);
-    },
+    ) => updatePassword(oldPassword, newPassword, user.id),
+    uploadUserAvatar: (_: any, { avatar }: { avatar: string }, { user }: { user: IUser }) =>
+      uploadUserAvatar(avatar, user.id),
   },
 };
