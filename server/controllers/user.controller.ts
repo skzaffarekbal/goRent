@@ -4,6 +4,7 @@ import User from '../models/user.model';
 import * as bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Response } from 'express';
+import { deleteImageFromCloudinary, uploadImageToCloudinary } from '../utils/cloudinary';
 
 export const registerUser = catchAsyncErrors(async (userInput: UserInput, res: Response) => {
   const { name, email, password, phone } = userInput;
@@ -90,3 +91,25 @@ export const updatePassword = catchAsyncErrors(
     return true;
   },
 );
+
+export const uploadUserAvatar = catchAsyncErrors(async (avatar: string, userId: string) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const avatarResponse = await uploadImageToCloudinary(avatar, 'goRent/avatars');
+
+  if (user?.avatar?.public_id) {
+    await deleteImageFromCloudinary(user?.avatar?.public_id);
+  }
+
+  user.avatar = {
+    public_id: avatarResponse.publicId,
+    url: avatarResponse.url,
+  };
+  await user.save();
+
+  return true;
+});
