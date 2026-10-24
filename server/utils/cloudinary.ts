@@ -1,0 +1,27 @@
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+export const uploadImageToCloudinary = async (image: string, folder: string) => {
+  const result = await cloudinary.uploader.upload(image, {
+    folder: folder,
+    resource_type: 'image',
+  });
+  return { url: result.secure_url, publicId: result.public_id };
+};
+
+export const uploadMultipleImage = async (images: string[], folder: string) => {
+  const uploadPromises = images?.map((image) => uploadImageToCloudinary(image, folder));
+
+  return Promise.all(uploadPromises);
+};
+
+export const deleteImageFromCloudinary = async (publicId: string) => {
+  const response = await cloudinary.uploader.destroy(publicId);
+
+  return response.result === 'ok';
+};
