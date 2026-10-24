@@ -27,8 +27,6 @@ const CarDetails = () => {
     },
   });
 
-  console.log('Car details :', error);
-
   const car: ICar = data?.getCarById;
 
   if (loading) {
