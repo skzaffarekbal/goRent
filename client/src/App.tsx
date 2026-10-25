@@ -5,12 +5,13 @@ import Home from '@/components/Home';
 import CarDetails from '@/components/car/CarDetails';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import Register from './components/auth/Register';
-import Login from './components/auth/Login';
-import Profile from './components/user/Profile';
-import Dashboard from './components/admin/Dashboard';
-import ProtectedRoute from './components/auth/ProtectedRoute';
-import ForgotPassword from './components/auth/ForgotPassword';
+import Register from '@/components/auth/Register';
+import Login from '@/components/auth/Login';
+import Profile from '@/components/user/Profile';
+import Dashboard from '@/components/admin/Dashboard';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import ForgetPassword from '@/components/auth/ForgetPassword';
+import ResetPassword from '@/components/auth/ResetPassword';
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
 
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/forgot-password' element={<ForgetPassword />} />
+        <Route path='/password/reset/:token' element={<ResetPassword />} />
 
         <Route
           path='/me/profile'

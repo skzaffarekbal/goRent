@@ -14,10 +14,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FORGET_PASSWORD_MUTATION } from '@/graphql/mutations/user.mutations';
 import { ForgetPasswordSchema } from '@/zod-schemas/user.schemas';
 
-type ForgotPasswordInput = z.infer<typeof ForgetPasswordSchema>;
+type ForgetPasswordInput = z.infer<typeof ForgetPasswordSchema>;
 
-const ForgotPassword = () => {
-  const form = useForm<ForgotPasswordInput>({
+const ForgetPassword = () => {
+  const form = useForm<ForgetPasswordInput>({
     resolver: zodResolver(ForgetPasswordSchema),
     defaultValues: {
       email: '',
@@ -30,14 +30,14 @@ const ForgotPassword = () => {
     },
   });
 
-  const submitHandler = async (values: ForgotPasswordInput) => {
+  const submitHandler = async (values: ForgetPasswordInput) => {
     await errorWrapper(async () => {
       await forgetPassword({ variables: { email: values?.email } });
     });
   };
 
   return (
-    <form id='form-register-input' onSubmit={form.handleSubmit(submitHandler)}>
+    <form id='form-forget-password-input' onSubmit={form.handleSubmit(submitHandler)}>
       <div className='flex min-h-screen flex-1 flex-col gap-4 bg-muted/40 justify-center'>
         <Card className='mx-auto w-full max-w-lg shadow-lg'>
           <CardHeader>
@@ -51,10 +51,10 @@ const ForgotPassword = () => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor='form-register-input-email'>Email</FieldLabel>
+                    <FieldLabel htmlFor='form-forget-password-input-email'>Email</FieldLabel>
                     <Input
                       {...field}
-                      id='form-register-input-email'
+                      id='form-forget-password-input-email'
                       aria-invalid={fieldState.invalid}
                       placeholder='johndoe@gmail.com'
                       autoComplete='email'
@@ -67,7 +67,7 @@ const ForgotPassword = () => {
 
             <Button
               type='submit'
-              form='form-register-input'
+              form='form-forget-password-input'
               className='w-full mt-4'
               disabled={loading}
             >
@@ -91,4 +91,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgetPassword;
