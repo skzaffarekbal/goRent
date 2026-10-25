@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import catchAsyncErrors from '../middlewares/catchAsyncErrors';
 import { UserInput } from '../types/user.types';
 import User from '../models/user.model';
@@ -145,3 +146,30 @@ export const forgetPassword = catchAsyncErrors(async (email: string) => {
     throw new Error(error?.message);
   }
 });
+
+export const resetPassword = catchAsyncErrors(
+  async (token: string, password: string, confirmPassword: string) => {
+    const resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      throw new Error('Invalid or expired token');
+    }
+
+    if (password !== confirmPassword) {
+      throw new Error('Passwords do not match');
+    }
+
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    return true;
+  },
+);
