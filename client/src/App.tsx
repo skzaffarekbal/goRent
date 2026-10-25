@@ -10,6 +10,7 @@ import Login from './components/auth/Login';
 import Profile from './components/user/Profile';
 import Dashboard from './components/admin/Dashboard';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import ForgotPassword from './components/auth/ForgotPassword';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
 
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
 
         <Route
           path='/me/profile'

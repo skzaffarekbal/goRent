@@ -53,3 +53,9 @@ export const UPLOAD_AVATAR_MUTATION = gql`
     uploadUserAvatar(avatar: $avatar)
   }
 `;
+
+export const FORGET_PASSWORD_MUTATION = gql`
+  mutation ForgetPassword($email: String!) {
+    forgetPassword(email: $email)
+  }
+`;
