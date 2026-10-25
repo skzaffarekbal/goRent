@@ -5,6 +5,8 @@ import * as bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Response } from 'express';
 import { deleteImageFromCloudinary, uploadImageToCloudinary } from '../utils/cloudinary';
+import { resetPasswordHTMLTemplate } from '../utils/emailTemplate';
+import sendEmail from '../utils/sendEmail';
 
 export const registerUser = catchAsyncErrors(async (userInput: UserInput, res: Response) => {
   const { name, email, password, phone } = userInput;
@@ -112,4 +114,34 @@ export const uploadUserAvatar = catchAsyncErrors(async (avatar: string, userId: 
   await user.save();
 
   return true;
+});
+
+export const forgetPassword = catchAsyncErrors(async (email: string) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const resetToken = user.getResetPasswordToken();
+  await user.save();
+
+  const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+  const message = resetPasswordHTMLTemplate(user.name, resetUrl);
+
+  try {
+    await sendEmail({
+      email,
+      subject: 'GoRent Password Recovery',
+      message,
+    });
+
+    return true;
+  } catch (error: any) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    throw new Error(error?.message);
+  }
 });

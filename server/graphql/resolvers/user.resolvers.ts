@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import {
+  forgetPassword,
   login,
   registerUser,
   updatePassword,
@@ -39,5 +40,6 @@ export const userResolvers = {
     ) => updatePassword(oldPassword, newPassword, user.id),
     uploadUserAvatar: (_: any, { avatar }: { avatar: string }, { user }: { user: IUser }) =>
       uploadUserAvatar(avatar, user.id),
+    forgetPassword: (_: any, { email }: { email: string }) => forgetPassword(email),
   },
 };
