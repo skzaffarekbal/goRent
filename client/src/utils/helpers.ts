@@ -35,3 +35,12 @@ export const getUserNameInitials = (fullname?: string) => {
     .join('')
     .toUpperCase();
 };
+
+export const calculateAmount = (rentPerDay: number, daysOfRent: number) => {
+  const rent = rentPerDay * daysOfRent;
+  const tax = rent * 0.15;
+  const discount = 0;
+  const total = rent + tax - discount;
+
+  return { rent, tax, discount, total };
+};
