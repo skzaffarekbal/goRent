@@ -1,24 +1,27 @@
+import { Application, json, Request, Response } from 'express';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@as-integrations/express5';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import cors from 'cors';
-import { Application, json, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import User from '../models/user.model';
+import { applyMiddleware } from 'graphql-middleware';
+import { permissions } from '../middlewares/permissions';
+
 import { carTypeDefs } from '../graphql/typeDefs/car.typeDefs';
 import { carResolvers } from '../graphql/resolvers/car.resolvers';
 import { userTypeDefs } from '../graphql/typeDefs/user.typeDefs';
 import { userResolvers } from '../graphql/resolvers/user.resolvers';
-import { applyMiddleware } from 'graphql-middleware';
-import { permissions } from '../middlewares/permissions';
-import jwt from 'jsonwebtoken';
-import User from '../models/user.model';
+import { bookingTypeDefs } from '../graphql/typeDefs/booking.typeDefs';
+import { bookingResolvers } from '../graphql/resolvers/booking.resolvers';
 
 interface CustomJwtPayload {
   _id: string;
 }
 
 export async function startApolloServer(app: Application) {
-  const typeDefs = [carTypeDefs, userTypeDefs];
-  const resolvers = [carResolvers, userResolvers];
+  const typeDefs = [carTypeDefs, userTypeDefs, bookingTypeDefs];
+  const resolvers = [carResolvers, userResolvers, bookingResolvers];
 
   const schema = makeExecutableSchema({
     typeDefs,
