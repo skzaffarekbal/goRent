@@ -14,7 +14,7 @@ import { StarRating } from '@/components/ui/star-rating';
 import LoadingSpinner from '@/components/layout/LoadingSpinner';
 import NotFound from '../layout/NotFound';
 // import { CustomBreadcrumb } from "../layout/BreadCrumbs";
-// import { BookingForm } from "../booking/BookingForm";
+import { BookingForm } from '../booking/BookingForm';
 // import CarReviews from "../review/CarReviews";
 
 const CarDetails = () => {
@@ -94,7 +94,9 @@ const CarDetails = () => {
 
           {/* <CarReviews /> */}
         </div>
-        <div>{/* <BookingForm /> */}</div>
+        <div>
+          <BookingForm carId={car.id} rentPerDay={car.rentPerDay} />
+        </div>
       </main>
     </div>
   );
