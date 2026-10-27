@@ -12,6 +12,7 @@ import Dashboard from '@/components/admin/Dashboard';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import ForgetPassword from '@/components/auth/ForgetPassword';
 import ResetPassword from '@/components/auth/ResetPassword';
+import PaymentMethod from './components/payment/PaymentMethod';
 
 function App() {
   return (
@@ -34,6 +35,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path='/booking/:id/payment_method'
+          element={
+            <ProtectedRoute>
+              <PaymentMethod />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path='/admin/dashboard'
           element={
