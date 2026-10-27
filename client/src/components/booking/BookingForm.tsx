@@ -8,13 +8,20 @@ import { MoveRight } from 'lucide-react';
 // import CouponCard from '../coupon/CouponCard';
 import { AlertMessage } from '../layout/AlertMessage';
 import { useNavigate } from 'react-router-dom';
-import { useReactiveVar } from '@apollo/client/react';
+import { useMutation, useReactiveVar } from '@apollo/client/react';
 import { userVar } from '@/apollo/apollo-vars';
 import { useState } from 'react';
 import type { DateRange } from 'react-day-picker';
 import { CarDatePicker } from './CarDatePicker';
 import { differenceInDays } from 'date-fns';
-import { calculateAmount } from '@/utils/helpers';
+import {
+  adjustDateToLocalTimeZone,
+  calculateAmount,
+  errorToast,
+  errorWrapper,
+} from '@/utils/helpers';
+import { CREATE_BOOKING_MUTATION } from '@/graphql/mutations/booking.mutation';
+import type { IBooking } from '@gorent/shared';
 
 interface Props {
   carId: string;
@@ -22,7 +29,7 @@ interface Props {
   disableDates?: string[];
 }
 
-export function BookingForm({ carId, rentPerDay = 0, disableDates }: Props) {
+export function BookingForm({ carId, rentPerDay = 0 }: Props) {
   const user = useReactiveVar(userVar);
   const navigate = useNavigate();
 
@@ -50,12 +57,44 @@ export function BookingForm({ carId, rentPerDay = 0, disableDates }: Props) {
     to: new Date(),
   });
 
+  const [createBooking, { loading }] = useMutation<{ createBooking: IBooking }>(
+    CREATE_BOOKING_MUTATION,
+  );
+
   const dateChangeHandler = (date: DateRange | undefined) => {
     if (!date || !date.from || !date.to) return;
+
+    setDates(date);
     const daysOfRent =
       differenceInDays(date.to?.setHours(0, 0, 0, 0), date.from?.setHours(0, 0, 0, 0)) + 1;
     setDaysOfRent(daysOfRent);
     setAmount(calculateAmount(rentPerDay, daysOfRent));
+  };
+
+  const newBookingHandler = async () => {
+    if (!dates || !dates?.from || !dates?.to) return;
+
+    if (daysOfRent <= 0) {
+      return errorToast({ message: 'Please select booking dates' });
+    }
+
+    const newBookingData = {
+      amount,
+      customer,
+      daysOfRent,
+      rentPerDay,
+      car: carId,
+      startDate: adjustDateToLocalTimeZone(dates?.from),
+      endDate: adjustDateToLocalTimeZone(dates?.to),
+      additionalNote,
+    };
+
+    await errorWrapper(async () => {
+      const { data } = await createBooking({ variables: { bookingInput: newBookingData } });
+      if (data?.createBooking.id) {
+        navigate(`/booking/${data.createBooking.id}/payment_method`);
+      }
+    });
   };
 
   return (
@@ -165,8 +204,9 @@ export function BookingForm({ carId, rentPerDay = 0, disableDates }: Props) {
         </CardContent>
         <CardFooter>
           {user && (
-            <Button className='w-full'>
-              Proceed <MoveRight className='ms-3 h-5 w-5' />
+            <Button className='w-full' disabled={loading} onClick={newBookingHandler}>
+              {loading ? 'Proceeding...' : 'Proceed'}
+              <MoveRight className='ms-3 h-5 w-5' />
             </Button>
           )}
 

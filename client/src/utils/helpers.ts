@@ -44,3 +44,12 @@ export const calculateAmount = (rentPerDay: number, daysOfRent: number) => {
 
   return { rent, tax, discount, total };
 };
+
+export const adjustDateToLocalTimeZone = (date: Date | undefined) => {
+  if (!date) return null;
+
+  const localDate = new Date(date);
+  localDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+
+  return localDate;
+};
