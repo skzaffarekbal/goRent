@@ -60,7 +60,9 @@ export const bookingTypeDefs = gql`
     additionalNote: String!
   }
 
-#   type Query {}
+  type Query {
+    getBookingById(bookingId: ID!): Booking!
+  }
 
   type Mutation {
     createBooking(bookingInput: BookingInput!): Booking!
