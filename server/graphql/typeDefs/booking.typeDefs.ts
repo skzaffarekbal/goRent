@@ -66,5 +66,9 @@ export const bookingTypeDefs = gql`
 
   type Mutation {
     createBooking(bookingInput: BookingInput!): Booking!
+    updateBooking(
+      bookingId: ID!
+      bookingInput: BookingInput!
+    ): Boolean
   }
 `;

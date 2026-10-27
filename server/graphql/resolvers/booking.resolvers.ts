@@ -1,5 +1,5 @@
 import { IUser } from '@gorent/shared';
-import { createBooking, getBookingById } from '../../controllers/booking.controller';
+import { createBooking, getBookingById, updateBooking } from '../../controllers/booking.controller';
 import { BookingInput } from '../../types/booking.types';
 
 export const bookingResolvers = {
@@ -13,5 +13,10 @@ export const bookingResolvers = {
       { bookingInput }: { bookingInput: BookingInput },
       { user }: { user: IUser },
     ) => createBooking(bookingInput, user.id),
+    updateBooking: (
+      _: any,
+      { bookingId, bookingInput }: { bookingId: string; bookingInput: BookingInput },
+      { user }: { user: IUser },
+    ) => updateBooking(bookingId, bookingInput, user),
   },
 };
