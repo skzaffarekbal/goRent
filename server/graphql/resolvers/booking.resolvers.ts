@@ -15,7 +15,7 @@ export const bookingResolvers = {
     ) => createBooking(bookingInput, user.id),
     updateBooking: (
       _: any,
-      { bookingId, bookingInput }: { bookingId: string; bookingInput: BookingInput },
+      { bookingId, bookingInput }: { bookingId: string; bookingInput: Partial<BookingInput> },
       { user }: { user: IUser },
     ) => updateBooking(bookingId, bookingInput, user),
   },
