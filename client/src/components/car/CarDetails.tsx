@@ -21,13 +21,16 @@ const CarDetails = () => {
   const params = useParams();
   const { data, loading, error } = useQuery<{
     getCarById: ICar;
+    getCarBookedDates: string[];
   }>(GET_CAR_BY_ID, {
     variables: {
       carId: params?.id,
+      getCarBookedDatesCarId2: params?.id,
     },
   });
 
   const car: ICar = data?.getCarById;
+  const bookedDates: string[] = data?.getCarBookedDates || [];
 
   if (loading) {
     return <LoadingSpinner fullScreen={true} size={60} />;
@@ -95,7 +98,7 @@ const CarDetails = () => {
           {/* <CarReviews /> */}
         </div>
         <div>
-          <BookingForm carId={car.id} rentPerDay={car.rentPerDay} />
+          <BookingForm carId={car.id} rentPerDay={car.rentPerDay} disableDates={bookedDates} />
         </div>
       </main>
     </div>
