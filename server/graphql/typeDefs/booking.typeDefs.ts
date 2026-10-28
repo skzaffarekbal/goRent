@@ -72,6 +72,7 @@ export const bookingTypeDefs = gql`
 
   type Query {
     getBookingById(bookingId: String!): Booking!
+    getCarBookedDates(carId: String!): [String]!
   }
 
   type Mutation {
