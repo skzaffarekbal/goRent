@@ -1,4 +1,4 @@
-import { IUser } from '@gorent/shared';
+import { IBooking, IUser } from '@gorent/shared';
 import catchAsyncErrors from '../middlewares/catchAsyncErrors';
 import Booking from '../models/booking.model';
 import { BookingInput } from '../types/booking.types';
@@ -41,3 +41,24 @@ export const updateBooking = catchAsyncErrors(
     return true;
   },
 );
+
+export const getCarBookedDates = catchAsyncErrors(async (carId: string) => {
+  const bookings = await Booking.find({
+    car: carId,
+  });
+
+  const bookingDates = bookings.flatMap((booking) => {
+    const startDate = new Date(booking.startDate);
+    const endDate = new Date(booking.endDate);
+
+    const dates: Date[] = [];
+
+    for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+      dates.push(new Date(date));
+    }
+
+    return dates;
+  });
+
+  return bookingDates;
+});

@@ -1,8 +1,13 @@
-import mongoose from 'mongoose';
+import mongoose, { PopulatedDoc, Types } from 'mongoose';
 import { BookingPaymentMethods, BookingPaymentStatus } from '@gorent/shared';
-import { IBooking } from '@gorent/shared';
+import { IBooking, ICar, IUser } from '@gorent/shared';
 
-const bookingSchema = new mongoose.Schema<IBooking>(
+export interface IBookingDocument extends Omit<IBooking, 'car' | 'user'> {
+  car: PopulatedDoc<ICar, Types.ObjectId>;
+  user: PopulatedDoc<IUser, Types.ObjectId>;
+}
+
+const bookingSchema = new mongoose.Schema<IBookingDocument>(
   {
     car: {
       type: mongoose.Schema.Types.ObjectId,
@@ -81,5 +86,5 @@ const bookingSchema = new mongoose.Schema<IBooking>(
   { timestamps: true },
 );
 
-const Booking = mongoose.model<IBooking>('Booking', bookingSchema);
+const Booking = mongoose.model<IBookingDocument>('Booking', bookingSchema);
 export default Booking;

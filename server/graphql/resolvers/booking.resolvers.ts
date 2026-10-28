@@ -1,11 +1,17 @@
 import { IUser } from '@gorent/shared';
-import { createBooking, getBookingById, updateBooking } from '../../controllers/booking.controller';
+import {
+  createBooking,
+  getBookingById,
+  getCarBookedDates,
+  updateBooking,
+} from '../../controllers/booking.controller';
 import { BookingInput } from '../../types/booking.types';
 
 export const bookingResolvers = {
   Query: {
     getBookingById: (_: any, { bookingId }: { bookingId: string }, { user }: { user: IUser }) =>
       getBookingById(bookingId, user),
+    getCarBookedDates: (_: any, { carId }: { carId: string }) => getCarBookedDates(carId),
   },
   Mutation: {
     createBooking: (
