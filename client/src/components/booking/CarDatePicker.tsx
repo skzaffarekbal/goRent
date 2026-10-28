@@ -12,7 +12,7 @@ import { cn } from 'cn';
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   dates?: DateRange | undefined;
   onDateChange?: (dates: DateRange | undefined) => void;
-  disableDates?: [string];
+  disableDates?: string[];
 }
 
 export function CarDatePicker({ className, dates, disableDates, onDateChange }: Props) {
@@ -31,6 +31,8 @@ export function CarDatePicker({ className, dates, disableDates, onDateChange }: 
     setDate(newDates);
     onDateChange?.(newDates);
   };
+
+  const parseDisableDates = disableDates?.map((timeStamp) => new Date(parseInt(timeStamp))) || [];
 
   return (
     <div className={cn('grid gap-2', className)}>
@@ -62,6 +64,7 @@ export function CarDatePicker({ className, dates, disableDates, onDateChange }: 
             selected={date}
             onSelect={handleDateChange}
             numberOfMonths={2}
+            disabled={[...parseDisableDates, { before: new Date() }]}
           />
         </PopoverContent>
       </Popover>

@@ -19,6 +19,8 @@ import {
   calculateAmount,
   errorToast,
   errorWrapper,
+  formatDate,
+  getAllDatesBetween,
 } from '@/utils/helpers';
 import { CREATE_BOOKING_MUTATION } from '@/graphql/mutations/booking.mutation';
 import type { IBooking } from '@gorent/shared';
@@ -29,11 +31,12 @@ interface Props {
   disableDates?: string[];
 }
 
-export function BookingForm({ carId, rentPerDay = 0 }: Props) {
+export function BookingForm({ carId, rentPerDay = 0, disableDates }: Props) {
   const user = useReactiveVar(userVar);
   const navigate = useNavigate();
 
   const [daysOfRent, setDaysOfRent] = useState<number>(0);
+  const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [additionalNote, setAdditionalNote] = useState<string>('');
   const [customer, setCustomer] = useState<{ name: string; email: string; phone: string }>({
     name: user?.name || '',
@@ -61,8 +64,20 @@ export function BookingForm({ carId, rentPerDay = 0 }: Props) {
     CREATE_BOOKING_MUTATION,
   );
 
+  const bookedDates = disableDates?.map(formatDate);
+
   const dateChangeHandler = (date: DateRange | undefined) => {
     if (!date || !date.from || !date.to) return;
+
+    const allDates = getAllDatesBetween(date.from, date.to);
+
+    const filteredDates = allDates.filter((d) => bookedDates?.includes(d));
+
+    if (filteredDates.length > 0) {
+      setIsAvailable(false);
+    } else {
+      setIsAvailable(true);
+    }
 
     setDates(date);
     const daysOfRent =
@@ -141,14 +156,20 @@ export function BookingForm({ carId, rentPerDay = 0 }: Props) {
 
               <div className='flex flex-col space-y-1.5'>
                 <Label htmlFor='phoneno'>Booking Dates</Label>
-                <CarDatePicker dates={dates} onDateChange={dateChangeHandler} />
+                <CarDatePicker
+                  dates={dates}
+                  onDateChange={dateChangeHandler}
+                  disableDates={disableDates}
+                />
               </div>
 
-              <AlertMessage
-                title='Not Available'
-                description='Dates are not available for booking. Try again!'
-                success={false}
-              />
+              {isAvailable === false && (
+                <AlertMessage
+                  title='Not Available'
+                  description='Dates are not available for booking. Try again!'
+                  success={false}
+                />
+              )}
 
               <div className='flex flex-col space-y-1.5'>
                 <Label htmlFor='additionalNote'>Additional Notes</Label>
@@ -203,7 +224,7 @@ export function BookingForm({ carId, rentPerDay = 0 }: Props) {
           </form>
         </CardContent>
         <CardFooter>
-          {user && (
+          {user && isAvailable && (
             <Button className='w-full' disabled={loading} onClick={newBookingHandler}>
               {loading ? 'Proceeding...' : 'Proceed'}
               <MoveRight className='ms-3 h-5 w-5' />
