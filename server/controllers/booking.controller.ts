@@ -24,7 +24,7 @@ export const getBookingById = catchAsyncErrors(async (bookingId: string, user: I
 });
 
 export const updateBooking = catchAsyncErrors(
-  async (bookingId: string, bookingInput: BookingInput, user: IUser) => {
+  async (bookingId: string, bookingInput: Partial<BookingInput>, user: IUser) => {
     const booking = await Booking.findById(bookingId).populate('car');
 
     if (!booking) {
