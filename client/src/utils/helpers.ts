@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { toast } from 'sonner';
 
 export const updateSearchParams = (searchParams: URLSearchParams, key: string, value: string) => {
@@ -52,4 +53,23 @@ export const adjustDateToLocalTimeZone = (date: Date | undefined) => {
   localDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
 
   return localDate;
+};
+
+export const formatDate = (date: Date | string) => {
+  if (typeof date === 'string') {
+    date = new Date(parseInt(date));
+  }
+  return format(date, 'yyyy-MM-dd');
+};
+
+export const getAllDatesBetween = (startDate: Date, endDate: Date) => {
+  const dates = [];
+  const currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    dates.push(formatDate(new Date(currentDate)));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
 };
