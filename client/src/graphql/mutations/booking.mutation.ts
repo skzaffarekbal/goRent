@@ -7,3 +7,9 @@ export const CREATE_BOOKING_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_BOOKING_MUTATION = gql`
+  mutation UpdateBooking($bookingId: String!, $bookingInput: UpdateBookingInput!) {
+    updateBooking(bookingId: $bookingId, bookingInput: $bookingInput)
+  }
+`;

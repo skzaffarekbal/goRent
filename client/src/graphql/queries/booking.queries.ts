@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_BOOKING_BY_ID = gql`
-query GetBookingById($bookingId: ID!) {
+query GetBookingById($bookingId: String!) {
   getBookingById(bookingId: $bookingId) {
     id
     additionalNote

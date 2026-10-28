@@ -6,17 +6,21 @@ import { Button } from '../ui/button';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { AlertMessage } from '../layout/AlertMessage';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client/react';
+import { useMutation, useQuery } from '@apollo/client/react';
 import { GET_BOOKING_BY_ID } from '@/graphql/queries/booking.queries';
 import LoadingSpinner from '../layout/LoadingSpinner';
-import { errorToast } from '@/utils/helpers';
+import { errorToast, errorWrapper } from '@/utils/helpers';
 import type { IBooking } from '@gorent/shared';
 import { useState } from 'react';
 import NotFound from '../layout/NotFound';
+import { UPDATE_BOOKING_MUTATION } from '@/graphql/mutations/booking.mutation';
+// import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const { id: bookingId } = useParams<{ id: string }>();
+  //   const navigate = useNavigate();
 
   const {
     data,
@@ -27,6 +31,32 @@ const PaymentMethod = () => {
   });
 
   const booking = data?.getBookingById;
+
+  const [updateBooking] = useMutation(UPDATE_BOOKING_MUTATION, {
+    onCompleted: () => {
+      toast.success('Booking updated successfully', {
+        description: 'Please pay cash with in 6 hours. Otherwise your booking will be removed.',
+      });
+    },
+    onError: (error) => {
+      errorToast(error);
+    },
+  });
+
+  const handleBookingUpdate = async () => {
+    if (paymentMethod === 'cash') {
+      const bookingInput = {
+        paymentInfo: { method: 'cash' },
+      };
+      await errorWrapper(async () => {
+        await updateBooking({ variables: { bookingId, bookingInput } });
+      });
+    }
+
+    if (paymentMethod === 'card') {
+      // handle card payment
+    }
+  };
 
   if (bookingLoading) {
     return <LoadingSpinner fullScreen={true} size={60} />;
@@ -120,7 +150,7 @@ const PaymentMethod = () => {
             </RadioGroup>
             {paymentMethod === 'cash' && (
               <AlertMessage
-                title='Pay Cash within 24 hours'
+                title='Pay Cash within 6 hours'
                 description='Otherwise your booking will be removed.'
                 success={false}
               />
@@ -134,7 +164,7 @@ const PaymentMethod = () => {
             )}
           </CardContent>
           <CardFooter>
-            <Button className='w-full'>
+            <Button className='w-full' onClick={handleBookingUpdate}>
               {paymentMethod === 'cash' ? (
                 <Coins className='mr-2 h-4 w-4' />
               ) : (
