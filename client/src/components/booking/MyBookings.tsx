@@ -16,6 +16,7 @@ import {
   calculateTablePaginationEnd,
   calculateTablePaginationStart,
   errorToast,
+  formatDate,
   parseTimestampDate,
 } from '@/utils/helpers';
 import LoadingSpinner from '../layout/LoadingSpinner';
@@ -176,6 +177,10 @@ const MyBookings = () => {
                         </TableCell>
                         <TableCell className='font-medium'>
                           <Link to={`/car/${booking.car.id}`}>{booking.car.name}</Link>
+                          <span className='text-sm font-thin text-muted-foreground block'>
+                            {formatDate(booking?.startDate, 'MMM dd, yyyy')} to{' '}
+                            {formatDate(booking?.endDate, 'MMM dd, yyyy')}
+                          </span>
                         </TableCell>
                         <TableCell className='font-medium'>
                           #{booking.id}
