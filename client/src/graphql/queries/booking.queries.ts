@@ -14,6 +14,10 @@ query GetBookingById($bookingId: String!) {
     car {
       id
       name
+      images {
+        public_id
+        url
+      }
     }
     customer {
       email
@@ -39,3 +43,36 @@ query GetBookingById($bookingId: String!) {
   }
 }
 `;
+
+export const GET_MY_BOOKINGS = gql`
+query MyBookings($page: Int, $query: String) {
+  myBookings(page: $page, query: $query) {
+    bookings {
+      amount {
+        total
+      }
+      car {
+        id
+        name
+        images {
+          public_id
+          url
+        }
+      }
+      startDate
+      endDate
+      id
+      paymentInfo {
+        status
+      }
+      createdAt
+    }
+    totalUnpaidBookings
+    totalBookings
+    totalAmount
+    pagination {
+      resPerPage
+      totalCount
+    }
+  }
+}`;

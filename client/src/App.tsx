@@ -13,6 +13,7 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import ForgetPassword from '@/components/auth/ForgetPassword';
 import ResetPassword from '@/components/auth/ResetPassword';
 import PaymentMethod from './components/payment/PaymentMethod';
+import MyBookings from './components/booking/MyBookings';
 
 function App() {
   return (
@@ -32,6 +33,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/me/bookings'
+          element={
+            <ProtectedRoute>
+              <MyBookings />
             </ProtectedRoute>
           }
         />
