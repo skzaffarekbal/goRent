@@ -36,6 +36,14 @@ export const bookingTypeDefs = gql`
     updatedAt: String!
   }
 
+  type CurrentUserBookings {
+    bookings: [Booking]
+    totalBookings: Int
+    totalUnpaidBookings: Int
+    totalAmount: Float
+    pagination: Pagination
+  }
+
   input CustomerInput {
     name: String!
     phone: String!
@@ -73,6 +81,7 @@ export const bookingTypeDefs = gql`
   type Query {
     getBookingById(bookingId: String!): Booking!
     getCarBookedDates(carId: String!): [String]!
+    myBookings(page: Int, query: String): CurrentUserBookings
   }
 
   type Mutation {

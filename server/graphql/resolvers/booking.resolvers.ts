@@ -3,6 +3,7 @@ import {
   createBooking,
   getBookingById,
   getCarBookedDates,
+  myBookings,
   updateBooking,
 } from '../../controllers/booking.controller';
 import { BookingInput } from '../../types/booking.types';
@@ -12,6 +13,14 @@ export const bookingResolvers = {
     getBookingById: (_: any, { bookingId }: { bookingId: string }, { user }: { user: IUser }) =>
       getBookingById(bookingId, user),
     getCarBookedDates: (_: any, { carId }: { carId: string }) => getCarBookedDates(carId),
+    myBookings: (
+      _: any,
+      { page, query }: { page: number; query: string },
+      { user }: { user: IUser },
+    ) => {
+      const filters = { user: user.id };
+      return myBookings(page, filters, query);
+    },
   },
   Mutation: {
     createBooking: (
