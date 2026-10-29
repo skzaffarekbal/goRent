@@ -9,13 +9,14 @@ import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { GET_BOOKING_BY_ID } from '@/graphql/queries/booking.queries';
 import LoadingSpinner from '../layout/LoadingSpinner';
-import { errorToast, errorWrapper } from '@/utils/helpers';
+import { errorToast, errorWrapper, formatDate } from '@/utils/helpers';
 import type { IBooking } from '@gorent/shared';
 import { useState } from 'react';
 import NotFound from '../layout/NotFound';
 import { UPDATE_BOOKING_MUTATION } from '@/graphql/mutations/booking.mutation';
 // import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { CarImagesSlider } from '../car/CarImagesSlider';
 
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
@@ -68,12 +69,22 @@ const PaymentMethod = () => {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center h-screen'>
-      <div className='mb-10 flex items-center'>
-        <h1 className='text-4xl text-gray-600'>Booking #{booking?.id}</h1>
+    <div className='flex flex-col justify-center items-center my-10'>
+      <div className='mb-10 flex flex-col gap-2 items-center'>
+        <h1 className='lg:text-4xl md:text-2xl text-xl text-gray-600'>Booking #{booking?.id}</h1>
+        <div className='w-full flex flex-col gap-2 items-center max-w-sm'>
+          <h2 className='lg:text-xl md:text-lg text-base text-gray-600 font-semibold'>
+            {booking?.car.name}
+          </h2>
+          <span className='text-sm text-gray-500'>
+            {formatDate(booking?.startDate, 'MMM dd, yyyy')} to{' '}
+            {formatDate(booking?.endDate, 'MMM dd, yyyy')}
+          </span>
+          <CarImagesSlider images={booking?.car.images} />
+        </div>
       </div>
-      <div className='flex items-center'>
-        <Card className='h-full w-full max-w-xl me-10'>
+      <div className='flex md:flex-row flex-col gap-4 items-center md:items-stretch justify-center'>
+        <Card className='w-full max-w-xl flex flex-col'>
           <div className='flex items-center justify-start'>
             <ReceiptText className='h-12 w-12 ms-5' />
             <CardHeader className='w-full ps-2'>
@@ -81,7 +92,7 @@ const PaymentMethod = () => {
               <CardDescription>Below are your booking details</CardDescription>
             </CardHeader>
           </div>
-          <CardContent>
+          <CardContent className='flex-1'>
             <form>
               <div className='grid w-full items-center gap-3'>
                 <div className='flex justify-between'>
@@ -118,7 +129,7 @@ const PaymentMethod = () => {
             </form>
           </CardContent>
         </Card>
-        <Card className='h-full w-full max-w-xl'>
+        <Card className='w-full max-w-xl flex flex-col justify-between'>
           <CardHeader>
             <CardTitle>Payment Method</CardTitle>
             <CardDescription>Select your payment method to complete this booking</CardDescription>

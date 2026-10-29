@@ -55,11 +55,11 @@ export const adjustDateToLocalTimeZone = (date: Date | undefined) => {
   return localDate;
 };
 
-export const formatDate = (date: Date | string) => {
+export const formatDate = (date: Date | string, formatString: string = 'yyyy-MM-dd') => {
   if (typeof date === 'string') {
     date = new Date(parseInt(date));
   }
-  return format(date, 'yyyy-MM-dd');
+  return format(date, formatString);
 };
 
 export const getAllDatesBetween = (startDate: Date, endDate: Date) => {

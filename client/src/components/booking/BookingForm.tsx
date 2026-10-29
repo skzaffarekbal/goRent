@@ -64,7 +64,7 @@ export function BookingForm({ carId, rentPerDay = 0, disableDates }: Props) {
     CREATE_BOOKING_MUTATION,
   );
 
-  const bookedDates = disableDates?.map(formatDate);
+  const bookedDates = disableDates?.map((d) => formatDate(d));
 
   const dateChangeHandler = (date: DateRange | undefined) => {
     if (!date || !date.from || !date.to) return;
