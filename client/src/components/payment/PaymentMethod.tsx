@@ -17,11 +17,12 @@ import { UPDATE_BOOKING_MUTATION } from '@/graphql/mutations/booking.mutation';
 // import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { CarImagesSlider } from '../car/CarImagesSlider';
+import { STRIPE_CHECKOUT_SESSION_MUTATION } from '@/graphql/mutations/payment.mutation';
 
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const { id: bookingId } = useParams<{ id: string }>();
-  //   const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const {
     data,
@@ -44,6 +45,21 @@ const PaymentMethod = () => {
     },
   });
 
+  const [stripeCheckoutSession, { loading: checkoutLoading }] = useMutation(
+    STRIPE_CHECKOUT_SESSION_MUTATION,
+    {
+      onCompleted: (data: { stripeCheckoutSession: { url: string } }) => {
+        if (data.stripeCheckoutSession?.url) {
+          // navigate(data.stripeCheckoutSession.url);
+          window.location.href = data.stripeCheckoutSession.url;
+        }
+      },
+      onError: (error) => {
+        errorToast(error);
+      },
+    },
+  );
+
   const handleBookingUpdate = async () => {
     if (paymentMethod === 'cash') {
       const bookingInput = {
@@ -55,7 +71,9 @@ const PaymentMethod = () => {
     }
 
     if (paymentMethod === 'card') {
-      // handle card payment
+      await errorWrapper(async () => {
+        await stripeCheckoutSession({ variables: { bookingId } });
+      });
     }
   };
 
@@ -175,7 +193,11 @@ const PaymentMethod = () => {
             )}
           </CardContent>
           <CardFooter>
-            <Button className='w-full' onClick={handleBookingUpdate}>
+            <Button
+              className='w-full'
+              onClick={handleBookingUpdate}
+              disabled={checkoutLoading || bookingLoading}
+            >
               {paymentMethod === 'cash' ? (
                 <Coins className='mr-2 h-4 w-4' />
               ) : (
