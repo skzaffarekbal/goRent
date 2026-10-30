@@ -14,14 +14,16 @@ import { userTypeDefs } from '../graphql/typeDefs/user.typeDefs';
 import { userResolvers } from '../graphql/resolvers/user.resolvers';
 import { bookingTypeDefs } from '../graphql/typeDefs/booking.typeDefs';
 import { bookingResolvers } from '../graphql/resolvers/booking.resolvers';
+import { paymentTypeDefs } from '../graphql/typeDefs/payment.typeDefs';
+import { paymentResolvers } from '../graphql/resolvers/payment.resolvers';
 
 interface CustomJwtPayload {
   _id: string;
 }
 
 export async function startApolloServer(app: Application) {
-  const typeDefs = [carTypeDefs, userTypeDefs, bookingTypeDefs];
-  const resolvers = [carResolvers, userResolvers, bookingResolvers];
+  const typeDefs = [carTypeDefs, userTypeDefs, bookingTypeDefs, paymentTypeDefs];
+  const resolvers = [carResolvers, userResolvers, bookingResolvers, paymentResolvers];
 
   const schema = makeExecutableSchema({
     typeDefs,
