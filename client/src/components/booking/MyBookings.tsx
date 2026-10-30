@@ -1,4 +1,14 @@
-import { CreditCard, DollarSign, ReceiptText, Search, Users, X } from 'lucide-react';
+import {
+  BanknoteCheck,
+  BanknoteX,
+  CreditCard,
+  DollarSign,
+  Hourglass,
+  ReceiptText,
+  Search,
+  Users,
+  X,
+} from 'lucide-react';
 
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -189,7 +199,20 @@ const MyBookings = () => {
                           </span>
                         </TableCell>
                         <TableCell>
-                          <Badge variant='outline'>{booking.paymentInfo.status}</Badge>
+                          <Badge variant={'outline'}>
+                            {booking.paymentInfo.status === 'paid' ? (
+                              <BanknoteCheck />
+                            ) : booking.paymentInfo.status === 'pending' ? (
+                              <Hourglass />
+                            ) : (
+                              <BanknoteX />
+                            )}{' '}
+                            {booking.paymentInfo.status === 'paid'
+                              ? 'Paid'
+                              : booking.paymentInfo.status === 'pending'
+                                ? 'Pending'
+                                : 'Canceled'}
+                          </Badge>
                         </TableCell>
                         <TableCell className='hidden md:table-cell'>
                           ${booking?.amount?.total?.toFixed(2)}
