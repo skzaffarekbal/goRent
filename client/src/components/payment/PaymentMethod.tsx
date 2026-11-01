@@ -14,7 +14,7 @@ import type { IBooking } from '@gorent/shared';
 import { useState } from 'react';
 import NotFound from '../layout/NotFound';
 import { UPDATE_BOOKING_MUTATION } from '@/graphql/mutations/booking.mutation';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { CarImagesSlider } from '../car/CarImagesSlider';
 import { STRIPE_CHECKOUT_SESSION_MUTATION } from '@/graphql/mutations/payment.mutation';
@@ -22,7 +22,7 @@ import { STRIPE_CHECKOUT_SESSION_MUTATION } from '@/graphql/mutations/payment.mu
 const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const { id: bookingId } = useParams<{ id: string }>();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const {
     data,
@@ -53,7 +53,6 @@ const PaymentMethod = () => {
     {
       onCompleted: (data: { stripeCheckoutSession: { url: string } }) => {
         if (data.stripeCheckoutSession?.url) {
-          // navigate(data.stripeCheckoutSession.url);
           window.location.href = data.stripeCheckoutSession.url;
         }
       },
@@ -221,21 +220,19 @@ const PaymentMethod = () => {
           <CardFooter>
             <Button
               className='w-full'
-              onClick={handleBookingUpdate}
-              disabled={checkoutLoading || bookingLoading || isFinalized}
+              onClick={
+                isFinalized
+                  ? () => navigate(`/booking/invoice/${booking?.id}`)
+                  : handleBookingUpdate
+              }
+              disabled={checkoutLoading || bookingLoading}
             >
               {paymentMethod === 'cash' ? (
                 <Coins className='mr-2 h-4 w-4' />
               ) : (
                 <CreditCard className='mr-2 h-4 w-4' />
               )}{' '}
-              {booking.paymentInfo.status === 'paid'
-                ? 'Paid'
-                : booking.paymentInfo.status === 'cancelled'
-                  ? 'Cancelled'
-                  : paymentMethod === 'cash'
-                    ? 'Confirm Booking'
-                    : 'Pay Now'}
+              {isFinalized ? 'Invoice' : paymentMethod === 'cash' ? 'Confirm Booking' : 'Pay Now'}
             </Button>
           </CardFooter>
         </Card>

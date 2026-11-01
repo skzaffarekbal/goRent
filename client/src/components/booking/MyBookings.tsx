@@ -226,7 +226,7 @@ const MyBookings = () => {
                             </Link>
                           )}
                           {booking?.paymentInfo?.status == 'paid' && (
-                            <Link to='/invoice'>
+                            <Link to={`/booking/invoice/${booking?.id}`}>
                               <Button className=''>
                                 <ReceiptText className='mr-2 h-4 w-4' /> Invoice
                               </Button>

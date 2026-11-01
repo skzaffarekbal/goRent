@@ -14,6 +14,7 @@ import ForgetPassword from '@/components/auth/ForgetPassword';
 import ResetPassword from '@/components/auth/ResetPassword';
 import PaymentMethod from './components/payment/PaymentMethod';
 import MyBookings from './components/booking/MyBookings';
+import Invoice from './components/Invoice/Invoice';
 
 function App() {
   return (
@@ -51,6 +52,15 @@ function App() {
           element={
             <ProtectedRoute>
               <PaymentMethod />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/booking/invoice/:id'
+          element={
+            <ProtectedRoute>
+              <Invoice />
             </ProtectedRoute>
           }
         />
