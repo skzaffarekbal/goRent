@@ -34,6 +34,9 @@ const PaymentMethod = () => {
 
   const booking = data?.getBookingById;
 
+  const isFinalized = ['paid', 'cancelled'].includes(booking?.paymentInfo?.status);
+  const activePaymentMethod = isFinalized ? booking?.paymentInfo?.method : paymentMethod;
+
   const [updateBooking] = useMutation(UPDATE_BOOKING_MUTATION, {
     onCompleted: () => {
       toast.success('Booking updated successfully', {
@@ -94,10 +97,15 @@ const PaymentMethod = () => {
           <h2 className='lg:text-xl md:text-lg text-base text-gray-600 font-semibold'>
             {booking?.car.name}
           </h2>
-          <span className='text-sm text-gray-500'>
-            {formatDate(booking?.startDate, 'MMM dd, yyyy')} to{' '}
-            {formatDate(booking?.endDate, 'MMM dd, yyyy')}
-          </span>
+          <div className='flex flex-col gap-0 bg-gray-100 w-full p-2 rounded-lg text-center'>
+            <span className='text-sm text-gray-500'>
+              Booked on: {formatDate(booking?.createdAt, 'MMM dd, yyyy  hh:mm a')}
+            </span>
+            <span className='text-sm text-gray-500'>
+              Pick up at {formatDate(booking?.startDate, 'MMM dd, yyyy')} to{' '}
+              {formatDate(booking?.endDate, 'MMM dd, yyyy')}
+            </span>
+          </div>
           <CarImagesSlider images={booking?.car.images} />
         </div>
       </div>
@@ -157,9 +165,9 @@ const PaymentMethod = () => {
               <Label
                 htmlFor='cash'
                 className={`flex flex-col items-center justify-between rounded-md border-2 bg-popover p-4 cursor-pointer transition-all hover:bg-accent hover:text-accent-foreground ${
-                  paymentMethod === 'cash' ? 'border-primary' : 'border-muted'
+                  activePaymentMethod === 'cash' ? 'border-primary' : 'border-muted'
                 }`}
-                onClick={() => setPaymentMethod('cash')}
+                onClick={() => !isFinalized && setPaymentMethod('cash')}
               >
                 <RadioGroupItem value='cash' id='cash' className='sr-only' />
                 <Coins className='mb-3 h-6 w-6' />
@@ -168,27 +176,45 @@ const PaymentMethod = () => {
               <Label
                 htmlFor='card'
                 className={`flex flex-col items-center justify-between rounded-md border-2 bg-popover p-4 cursor-pointer transition-all hover:bg-accent hover:text-accent-foreground ${
-                  paymentMethod === 'card' ? 'border-primary' : 'border-muted'
+                  activePaymentMethod === 'card' ? 'border-primary' : 'border-muted'
                 }`}
-                onClick={() => setPaymentMethod('card')}
+                onClick={() => !isFinalized && setPaymentMethod('card')}
               >
                 <RadioGroupItem value='card' id='card' className='sr-only' />
                 <CreditCard className='mb-3 h-6 w-6' />
                 Card
               </Label>
             </RadioGroup>
-            {paymentMethod === 'cash' && (
+            {paymentMethod === 'cash' &&
+              !['paid', 'cancelled'].includes(booking.paymentInfo.status) && (
+                <AlertMessage
+                  title='Pay Cash within 6 hours'
+                  description='Otherwise your booking will be removed.'
+                  success={false}
+                />
+              )}
+            {paymentMethod === 'card' &&
+              !['paid', 'cancelled'].includes(booking.paymentInfo.status) && (
+                <AlertMessage
+                  title='Instant Confirmation'
+                  description='Booking will be confirmed after payment'
+                  success={true}
+                />
+              )}
+
+            {booking.paymentInfo.status === 'paid' && (
               <AlertMessage
-                title='Pay Cash within 6 hours'
-                description='Otherwise your booking will be removed.'
-                success={false}
+                title='Booking Confirmed'
+                description='Your booking has been confirmed'
+                success={true}
               />
             )}
-            {paymentMethod === 'card' && (
+
+            {booking.paymentInfo.status === 'cancelled' && (
               <AlertMessage
-                title='Instant Confirmation'
-                description='Booking will be confirmed after payment'
-                success={true}
+                title='Booking Cancelled'
+                description='Your booking has been cancelled'
+                success={false}
               />
             )}
           </CardContent>
@@ -196,14 +222,20 @@ const PaymentMethod = () => {
             <Button
               className='w-full'
               onClick={handleBookingUpdate}
-              disabled={checkoutLoading || bookingLoading}
+              disabled={checkoutLoading || bookingLoading || isFinalized}
             >
               {paymentMethod === 'cash' ? (
                 <Coins className='mr-2 h-4 w-4' />
               ) : (
                 <CreditCard className='mr-2 h-4 w-4' />
               )}{' '}
-              {paymentMethod === 'cash' ? 'Confirm Booking' : 'Pay Now'}
+              {booking.paymentInfo.status === 'paid'
+                ? 'Paid'
+                : booking.paymentInfo.status === 'cancelled'
+                  ? 'Cancelled'
+                  : paymentMethod === 'cash'
+                    ? 'Confirm Booking'
+                    : 'Pay Now'}
             </Button>
           </CardFooter>
         </Card>

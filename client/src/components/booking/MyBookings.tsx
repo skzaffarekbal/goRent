@@ -193,7 +193,7 @@ const MyBookings = () => {
                           </span>
                         </TableCell>
                         <TableCell className='font-medium'>
-                          #{booking.id}
+                          <Link to={`/booking/${booking.id}/payment_method`}>#{booking.id}</Link>
                           <span className='text-sm font-thin text-muted-foreground block'>
                             {parseTimestampDate(booking?.createdAt.toString())}
                           </span>
@@ -227,7 +227,7 @@ const MyBookings = () => {
                           )}
                           {booking?.paymentInfo?.status == 'paid' && (
                             <Link to='/invoice'>
-                              <Button className='ml-2'>
+                              <Button className=''>
                                 <ReceiptText className='mr-2 h-4 w-4' /> Invoice
                               </Button>
                             </Link>
