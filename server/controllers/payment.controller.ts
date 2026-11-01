@@ -36,3 +36,33 @@ export const stripeCheckoutSession = catchAsyncErrors(async (bookingId: string) 
 
   return { url: session?.url };
 });
+
+export const webhookHandler = catchAsyncErrors(async (signature: string, rawBody: string) => {
+  try {
+    const event = stripeClient.webhooks.constructEvent(
+      rawBody,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET!,
+    );
+
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+      const bookingId = session.client_reference_id;
+
+      const paymentInfo = {
+        id: session.payment_intent as string,
+        status: session?.payment_status,
+        method: 'card',
+      };
+
+      await Booking.findByIdAndUpdate(bookingId, {
+        paymentInfo: paymentInfo,
+      });
+
+      return true;
+    }
+  } catch (error) {
+    console.log('Error in stripe webhook : ', error);
+    throw new Error('Error in stripe webhook.');
+  }
+});
