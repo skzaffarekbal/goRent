@@ -8,6 +8,8 @@ import { GET_BOOKING_BY_ID } from '@/graphql/queries/booking.queries';
 import { errorToast, formatDate, parseTimestampDate } from '@/utils/helpers';
 import NotFound from '../layout/NotFound';
 import LoadingSpinner from '../layout/LoadingSpinner';
+import html2canvas from 'html2canvas-pro';
+import { jsPDF } from 'jspdf';
 
 const Invoice = () => {
   const { id: bookingId } = useParams<{ id: string }>();
@@ -17,6 +19,46 @@ const Invoice = () => {
   });
 
   const booking = data?.getBookingById;
+
+  const handleInvoiceDownload = () => {
+    const input = document.getElementById('order_invoice');
+    if (!input) {
+      errorToast('Invoice not found');
+      return;
+    }
+
+    html2canvas(input, {
+      useCORS: true,
+      scale: 2,
+      logging: false,
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+
+      // 2. Calculate proportional dimensions to prevent stretching
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      // 3. Handle multi-page invoices safely
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+
+      // If the invoice is longer than one page, slice it into new pages
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+
+      pdf.save(`goRent-invoice-${bookingId}.pdf`);
+    });
+  };
 
   if (loading) {
     return <LoadingSpinner fullScreen={true} size={60} />;
@@ -31,8 +73,8 @@ const Invoice = () => {
     <div className='container my-10'>
       <div className='invoice mt-10'>
         <div className='flex justify-end'>
-          <Button className='ml-2 mx-10 mb-10'>
-            <ReceiptText className='mr-2 h-4 w-4' /> Print Invoice
+          <Button className='ml-2 mx-10 mb-10' onClick={handleInvoiceDownload}>
+            <ReceiptText className='mr-2 h-4 w-4' /> Download Invoice
           </Button>
         </div>
         <div className='px-10 py-5' id='order_invoice'>
