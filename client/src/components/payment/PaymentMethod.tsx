@@ -40,7 +40,7 @@ const PaymentMethod = () => {
   const [updateBooking] = useMutation(UPDATE_BOOKING_MUTATION, {
     onCompleted: () => {
       toast.success('Booking updated successfully', {
-        description: 'Please pay cash with in 6 hours. Otherwise your booking will be removed.',
+        description: 'Please pay cash with in 6 hours. Otherwise your booking will be cancelled.',
       });
     },
     onError: (error) => {

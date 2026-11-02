@@ -86,5 +86,17 @@ const bookingSchema = new mongoose.Schema<IBookingDocument>(
   { timestamps: true },
 );
 
+// MongoDB's TTL (Time-To-Live) index is strictly designed to delete documents. So it can't be used for the requirement of updating a field after a time period.
+
+// bookingSchema.index(
+//   {
+//     createdAt: 1,
+//   },
+//   {
+//     expireAfterSeconds: 2 * 24 * 60 * 60,
+//     partialFilterExpression: { 'paymentInfo.status': 'pending' },
+//   },
+// );
+
 const Booking = mongoose.model<IBookingDocument>('Booking', bookingSchema);
 export default Booking;
