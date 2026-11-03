@@ -1,6 +1,7 @@
 import {
   BanknoteCheck,
   BanknoteX,
+  Car,
   CreditCard,
   DollarSign,
   Hourglass,
@@ -229,6 +230,13 @@ const MyBookings = () => {
                             <Link to={`/booking/invoice/${booking?.id}`}>
                               <Button className=''>
                                 <ReceiptText className='mr-2 h-4 w-4' /> Invoice
+                              </Button>
+                            </Link>
+                          )}
+                          {booking?.paymentInfo?.status == 'cancelled' && (
+                            <Link to={`/car/${booking.car.id}`}>
+                              <Button>
+                                <Car className='mr-2 h-4 w-4' /> Rebook
                               </Button>
                             </Link>
                           )}

@@ -46,6 +46,9 @@ export const updateBooking = catchAsyncErrors(
 export const getCarBookedDates = catchAsyncErrors(async (carId: string) => {
   const bookings = await Booking.find({
     car: carId,
+    'paymentInfo.status': {
+      $ne: 'cancelled',
+    },
   });
 
   const bookingDates = bookings.flatMap((booking) => {

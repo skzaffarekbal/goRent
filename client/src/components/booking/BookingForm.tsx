@@ -24,6 +24,7 @@ import {
 } from '@/utils/helpers';
 import { CREATE_BOOKING_MUTATION } from '@/graphql/mutations/booking.mutation';
 import type { IBooking } from '@gorent/shared';
+import { GET_MY_BOOKINGS } from '@/graphql/queries/booking.queries';
 
 interface Props {
   carId: string;
@@ -62,6 +63,9 @@ export function BookingForm({ carId, rentPerDay = 0, disableDates }: Props) {
 
   const [createBooking, { loading }] = useMutation<{ createBooking: IBooking }>(
     CREATE_BOOKING_MUTATION,
+    {
+      refetchQueries: [{ query: GET_MY_BOOKINGS }],
+    },
   );
 
   const bookedDates = disableDates?.map((d) => formatDate(d));
