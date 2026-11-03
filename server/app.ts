@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { connectDB } from './config/dbConnect';
 import { startApolloServer } from './apollo/apolloServer';
+import './worker/cronWorker';
 
 dotenv.config({ path: '.env' });
 

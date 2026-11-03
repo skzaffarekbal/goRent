@@ -17,7 +17,7 @@ export const CarDoors = [2, 4, 5, 6] as const;
 export const CarSeats = [2, 4, 5, 7, 8, 9, 10, 12, 15] as const;
 
 export const BookingPaymentMethods = ['cash', 'card'] as const;
-export const BookingPaymentStatus = ['pending', 'paid'] as const;
+export const BookingPaymentStatus = ['pending', 'paid', 'cancelled'] as const;
 
 export const UserRoles = ['user', 'admin'] as const;
 
