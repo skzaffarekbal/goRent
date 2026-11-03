@@ -2,9 +2,11 @@ import mongoose, { PopulatedDoc, Types } from 'mongoose';
 import { BookingPaymentMethods, BookingPaymentStatus } from '@gorent/shared';
 import { IBooking, ICar, IUser } from '@gorent/shared';
 
-export interface IBookingDocument extends Omit<IBooking, 'car' | 'user'> {
+export interface IBookingDocument extends Omit<IBooking, 'car' | 'user' | 'createdAt' | 'updatedAt'> {
   car: PopulatedDoc<ICar, Types.ObjectId>;
   user: PopulatedDoc<IUser, Types.ObjectId>;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const bookingSchema = new mongoose.Schema<IBookingDocument>(
@@ -93,7 +95,7 @@ const bookingSchema = new mongoose.Schema<IBookingDocument>(
 //     createdAt: 1,
 //   },
 //   {
-//     expireAfterSeconds: 2 * 24 * 60 * 60,
+//     expireAfterSeconds: 6 * 60 * 60,
 //     partialFilterExpression: { 'paymentInfo.status': 'pending' },
 //   },
 // );
