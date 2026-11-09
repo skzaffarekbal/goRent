@@ -1,6 +1,6 @@
 import './invoice.css';
 import { Button } from '../ui/button';
-import { ReceiptText } from 'lucide-react';
+import { ArrowLeft, ReceiptText } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client/react';
 import type { IBooking } from '@gorent/shared';
@@ -10,9 +10,11 @@ import NotFound from '../layout/NotFound';
 import LoadingSpinner from '../layout/LoadingSpinner';
 import html2canvas from 'html2canvas-pro';
 import { jsPDF } from 'jspdf';
+import { useNavigate } from 'react-router-dom';
 
 const Invoice = () => {
   const { id: bookingId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const { data, loading, error } = useQuery<{ getBookingById: IBooking }>(GET_BOOKING_BY_ID, {
     variables: { bookingId },
@@ -72,8 +74,11 @@ const Invoice = () => {
   return (
     <div className='container my-10'>
       <div className='invoice mt-10'>
-        <div className='flex justify-end'>
-          <Button className='ml-2 mx-10 mb-10' onClick={handleInvoiceDownload}>
+        <div className='flex justify-between mx-10 mb-10'>
+          <Button className='ml-2' onClick={() => navigate(-1)}>
+            <ArrowLeft className='mr-2 h-4 w-4' /> Back
+          </Button>
+          <Button className='ml-2' onClick={handleInvoiceDownload}>
             <ReceiptText className='mr-2 h-4 w-4' /> Download Invoice
           </Button>
         </div>
