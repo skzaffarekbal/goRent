@@ -103,8 +103,15 @@
   text-align: right;
 }
 
-.invoice table td h3 {
+.invoice table td .time {
   color: #57b223;
+  font-size: 1.2em;
+  font-weight: normal;
+  margin: 0 0 0.2em 0;
+}
+
+.invoice table td .time-cancelled {
+  color: #b23123;
   font-size: 1.2em;
   font-weight: normal;
   margin: 0 0 0.2em 0;
@@ -114,6 +121,12 @@
   color: #ffffff;
   font-size: 1.6em;
   background: #57b223;
+}
+
+.invoice table .no-cancelled {
+  color: #ffffff;
+  font-size: 1.6em;
+  background: #b23123;
 }
 
 .invoice table .desc {
@@ -129,6 +142,11 @@
 
 .invoice table .total {
   background: #57b223;
+  color: #ffffff;
+}
+
+.invoice table .total-cancelled {
+  background: #b23123;
   color: #ffffff;
 }
 
@@ -155,10 +173,16 @@
   border-top: none;
 }
 
-.invoice table tfoot tr:last-child td {
+.invoice table tfoot tr:last-child .totalTd {
   color: #57b223;
   font-size: 1.4em;
   border-top: 1px solid #57b223;
+}
+
+.invoice table tfoot tr:last-child .totalTd-cancelled {
+  color: #b23123;
+  font-size: 1.4em;
+  border-top: 1px solid #b23123;
 }
 
 .invoice table tfoot tr td:first-child {

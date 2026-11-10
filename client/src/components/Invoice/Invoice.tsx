@@ -116,29 +116,73 @@ const Invoice = () => {
             <table style={{ border: 'none', borderSpacing: '0', padding: '0' }}>
               <thead>
                 <tr>
-                  <th className='no'>CAR DETAILS</th>
+                  <th
+                    className={
+                      ['cancelled'].includes(booking?.paymentInfo?.status) ? 'no-cancelled' : 'no'
+                    }
+                  >
+                    CAR DETAILS
+                  </th>
                   <th className='desc'>CAR RENTAL DURATION</th>
                   <th className='unit'>RENT PER DAY</th>
                   <th className='qty'>DAYS OF RENT</th>
-                  <th className='total'>TOTAL</th>
+                  <th
+                    className={
+                      ['cancelled'].includes(booking?.paymentInfo?.status)
+                        ? 'total-cancelled'
+                        : 'total'
+                    }
+                  >
+                    TOTAL
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className='no'>{booking?.car?.name}</td>
+                  <td
+                    className={
+                      ['cancelled'].includes(booking?.paymentInfo?.status) ? 'no-cancelled' : 'no'
+                    }
+                  >
+                    {booking?.car?.name}
+                  </td>
                   <td className='desc'>
                     <div>
-                      <h3>Start Date:</h3>
+                      <h3
+                        className={
+                          ['cancelled'].includes(booking?.paymentInfo?.status)
+                            ? 'time-cancelled'
+                            : 'time'
+                        }
+                      >
+                        Start Date:
+                      </h3>
                       {formatDate(booking?.startDate, 'MMM dd, yyyy')}
                     </div>
                     <div className='mt-5'>
-                      <h3>End Date:</h3>
+                      <h3
+                        className={
+                          ['cancelled'].includes(booking?.paymentInfo?.status)
+                            ? 'time-cancelled'
+                            : 'time'
+                        }
+                      >
+                        End Date:
+                      </h3>
                       {formatDate(booking?.endDate, 'MMM dd, yyyy')}
                     </div>
                   </td>
                   <td className='unit'>${booking?.rentPerDay}</td>
                   <td className='qty'>{booking?.daysOfRent}</td>
-                  <td className='total'>${booking?.amount?.rent}</td>
+                  <td
+                    className={
+                      ['cancelled'].includes(booking?.paymentInfo?.status)
+                        ? 'total-cancelled'
+                        : 'total'
+                    }
+                  >
+                    ${booking?.amount?.rent}
+                  </td>
                 </tr>
               </tbody>
               <tfoot>
@@ -159,8 +203,25 @@ const Invoice = () => {
                 </tr>
                 <tr>
                   <td colSpan={2}></td>
-                  <td colSpan={2}>GRAND TOTAL</td>
-                  <td>${booking?.amount?.total}</td>
+                  <td
+                    className={
+                      ['cancelled'].includes(booking?.paymentInfo?.status)
+                        ? 'totalTd-cancelled'
+                        : 'totalTd'
+                    }
+                    colSpan={2}
+                  >
+                    GRAND TOTAL
+                  </td>
+                  <td
+                    className={
+                      ['cancelled'].includes(booking?.paymentInfo?.status)
+                        ? 'totalTd-cancelled'
+                        : 'totalTd'
+                    }
+                  >
+                    ${booking?.amount?.total}
+                  </td>
                 </tr>
               </tfoot>
             </table>
