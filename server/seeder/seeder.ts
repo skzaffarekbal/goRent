@@ -10,8 +10,14 @@ const seedCars = async () => {
     await connectDB();
     await Car.deleteMany();
     console.log('Deleted all cars');
-    await Car.insertMany(cars);
+
+    for (const carData of cars) {
+      const car = new Car(carData);
+      car.status = 'Active';
+      await car.save();
+    }
     console.log('Inserted all cars');
+
     process.exit();
   } catch (error) {
     console.log(error);
