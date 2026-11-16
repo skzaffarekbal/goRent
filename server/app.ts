@@ -1,11 +1,11 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env' });
+
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 import { connectDB } from './config/dbConnect';
 import { startApolloServer } from './apollo/apolloServer';
 import './worker/cronWorker';
-
-dotenv.config({ path: '.env' });
 
 const app = express();
 

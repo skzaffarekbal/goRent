@@ -9,6 +9,7 @@ import {
   ICar,
 } from '@gorent/shared';
 import mongoose from 'mongoose';
+import geocoder from '../utils/geoCoder';
 
 const carSchema = new mongoose.Schema<ICar>(
   {
@@ -33,24 +34,24 @@ const carSchema = new mongoose.Schema<ICar>(
       type: String,
       required: [true, 'Please enter address'],
     },
-    // location: {
-    //   type: {
-    //     type: String,
-    //     enum: ["Point"],
-    //   },
-    //   coordinates: {
-    //     type: [Number],
-    //     index: "2dsphere",
-    //   },
-    //   formattedAddress: String,
-    //   streetName: String,
-    //   city: String,
-    //   state: String,
-    //   stateCode: String,
-    //   zipcode: String,
-    //   country: String,
-    //   countryCode: String,
-    // },
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+      },
+      coordinates: {
+        type: [Number],
+        index: '2dsphere',
+      },
+      formattedAddress: String,
+      streetName: String,
+      city: String,
+      state: String,
+      stateCode: String,
+      zipcode: String,
+      country: String,
+      countryCode: String,
+    },
     images: [
       {
         url: String,
@@ -110,6 +111,30 @@ carSchema.virtual('ratings').get(function () {
   return {
     value: 5,
     count: 10,
+  };
+});
+
+carSchema.pre('save', async function () {
+  if (!this.isModified('address')) return;
+
+  const location = await geocoder.geocode(this.address);
+
+  const loc = location[0];
+  if (!loc || loc.longitude === undefined || loc.latitude === undefined) {
+    return;
+  }
+
+  this.location = {
+    type: 'Point',
+    coordinates: [loc.longitude, loc.latitude],
+    formattedAddress: loc.formattedAddress ?? '',
+    streetName: loc.streetName,
+    city: loc.city,
+    state: loc.administrativeLevels?.level1long,
+    stateCode: loc.administrativeLevels?.level1short,
+    zipcode: loc.zipcode,
+    country: loc.country,
+    countryCode: loc.countryCode,
   };
 });
 
