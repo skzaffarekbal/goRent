@@ -6,6 +6,7 @@ import type { ICar } from '@gorent/shared';
 import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { errorToast } from '@/utils/helpers';
+import LocationSearch from './map/LocationSearch';
 
 const Home = () => {
   const [lastError, setLastError] = useState(null);
@@ -59,7 +60,9 @@ const Home = () => {
         />
       </div>
       <div className='md:col-span-6 lg:col-span-4 flex flex-col'>
-        <div className='flex items-center justify-center h-screen'></div>
+        <div className='flex items-center justify-center h-screen'>
+          <LocationSearch />
+        </div>
         {/* Google Map Component */}
       </div>
     </main>
