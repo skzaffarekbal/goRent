@@ -84,7 +84,7 @@ function HomeMap({ cars }: Props) {
   }, []);
 
   useEffect(() => {
-    if (!googleMapRef.current || !coordinates || coordinates.length === 0) return;
+    if (!googleMapRef.current) return;
 
     const mapInstance = googleMapRef.current;
 
@@ -93,6 +93,8 @@ function HomeMap({ cars }: Props) {
       marker.map = null;
     });
     markersRef.current = [];
+
+    if (!coordinates || coordinates.length === 0) return;
 
     (async () => {
       const [{ InfoWindow }, { AdvancedMarkerElement }, { LatLngBounds }] = await Promise.all([
