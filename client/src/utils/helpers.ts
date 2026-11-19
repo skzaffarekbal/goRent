@@ -91,3 +91,45 @@ export const calculateTablePaginationEnd = (
   const end = Math.min(currentPage * resPerPage, totalCount);
   return end;
 };
+
+export const generateSvg = (
+  price: string,
+  bgColor: string = '#18181b',
+  textColor: string = '#ffffff',
+) => {
+  return `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="80"
+  height="48"
+  viewBox="0 0 80 48"
+  fill="none"
+>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Main Pill Badge with Shadow -->
+  <g filter="url(#shadow)">
+    <rect x="4" y="2" width="72" height="34" rx="17" fill="${bgColor}" stroke="#ffffff" stroke-width="2.5" />
+    <!-- Pin Arrow Tip -->
+    <path d="M40 44L34 34H46L40 44Z" fill="${bgColor}" />
+  </g>
+
+  <!-- Price Text -->
+  <text
+    x="40"
+    y="22"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    fill="${textColor}"
+    font-size="14px"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-weight="700"
+    letter-spacing="-0.2px"
+  >
+    $${price}
+  </text>
+</svg>`;
+};
