@@ -187,17 +187,24 @@ const Invoice = () => {
               </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan={2}></td>
+                  {/* Image cell spanning across 2 columns and 4 rows to fit the empty space */}
+                  <td colSpan={2} rowSpan={3}>
+                    <div className='flex justify-center align-center h-full'>
+                      <img
+                        src={booking?.car?.images?.[0]?.url}
+                        alt='Logo'
+                        className='w-60 h-30 rounded-xl object-cover'
+                      />
+                    </div>
+                  </td>
                   <td colSpan={2}>RENT</td>
                   <td>${booking?.amount?.rent}</td>
                 </tr>
                 <tr>
-                  <td colSpan={2}></td>
                   <td colSpan={2}>DISCOUNT</td>
                   <td>${booking?.amount?.discount}</td>
                 </tr>
                 <tr>
-                  <td colSpan={2}></td>
                   <td colSpan={2}>TAX 15%</td>
                   <td>${booking?.amount?.tax}</td>
                 </tr>
