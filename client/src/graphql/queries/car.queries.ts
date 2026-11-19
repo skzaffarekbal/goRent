@@ -18,6 +18,10 @@ query GetAllCars($filters: CarFilters, $page: Int, $query: String) {
         count
         value
       }
+      address
+      location {
+        coordinates
+      }
     }
     pagination {
       resPerPage
