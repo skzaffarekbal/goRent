@@ -25,7 +25,11 @@ interface PlaceSuggestion {
   text: string;
 }
 
-function LocationSearch() {
+interface Props {
+  onLocationChange?: (location: string) => void;
+}
+
+function LocationSearch({ onLocationChange }: Props) {
   const [open, setOpen] = useState(false);
   const [locationValue, setLocationValue] = useState('');
   const [inputValue, setInputValue] = useState('');
@@ -106,6 +110,7 @@ function LocationSearch() {
                     value={text}
                     onSelect={() => {
                       setLocationValue(text);
+                      onLocationChange?.(text);
                       setOpen(false);
                     }}
                   >

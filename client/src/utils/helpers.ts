@@ -133,3 +133,18 @@ export const generateSvg = (
   </text>
 </svg>`;
 };
+
+export const isValidQueryValue = (value: unknown) => {
+  return value !== undefined && value !== null && value !== '';
+};
+
+export const formatQueryParam = (key: string, value: unknown) => {
+  return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
+};
+
+export const buildQueryString = (queries: Record<string, unknown>) => {
+  return Object.entries(queries)
+    .filter(([, value]) => isValidQueryValue(value))
+    .map(([key, value]) => formatQueryParam(key, String(value)))
+    .join('&');
+};

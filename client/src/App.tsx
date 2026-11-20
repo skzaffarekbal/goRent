@@ -15,6 +15,7 @@ import ResetPassword from '@/components/auth/ResetPassword';
 import PaymentMethod from './components/payment/PaymentMethod';
 import MyBookings from './components/booking/MyBookings';
 import Invoice from './components/Invoice/Invoice';
+import Search from './components/search/Search';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/car/:id' element={<CarDetails />} />
+        <Route path='/search' element={<Search />} />
 
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
