@@ -9,27 +9,26 @@ import { CarFilters, CarInput } from '../../types/car.types';
 
 export const carResolvers = {
   Query: {
-    getAllCars: async (
+    getAllCars: (
       parent: any,
       { page, filters, query }: { page: number; filters: CarFilters; query: string },
       context: any,
-    ) => await getAllCars(page, filters, query),
-    getCarById: async (_: any, { carId }: { carId: string }, context: any) =>
-      await getCarById(carId),
+    ) => getAllCars(page, filters, query),
+    getCarById: (_: any, { carId }: { carId: string }, context: any) => getCarById(carId),
   },
   Mutation: {
-    createCar: async (_: any, { carInput }: { carInput: CarInput }, context: any) => {
-      return await createCar(carInput);
+    createCar: (_: any, { carInput }: { carInput: CarInput }, context: any) => {
+      return createCar(carInput);
     },
-    updateCar: async (
+    updateCar: (
       _: any,
       { carId, carInput }: { carId: string; carInput: CarInput },
       context: any,
     ) => {
-      return await updateCar(carId, carInput);
+      return updateCar(carId, carInput);
     },
-    deleteCar: async (_: any, { carId }: { carId: string }, context: any) => {
-      return await deleteCar(carId);
+    deleteCar: (_: any, { carId }: { carId: string }, context: any) => {
+      return deleteCar(carId);
     },
   },
 };
