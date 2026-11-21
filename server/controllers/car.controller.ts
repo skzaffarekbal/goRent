@@ -5,9 +5,15 @@ import APIFilters from '../utils/apiFilters';
 import { NotFoundError } from '../utils/errorHandler';
 
 export const getAllCars = catchAsyncErrors(
-  async (page: string | number, filters: CarFilters, query: string) => {
+  async (page: string | number, filters: CarFilters, query: string, location: string) => {
     const resPerPage = 3;
     const apiFilter = new APIFilters(Car).search(query).filters(filters);
+
+    if (location) {
+      const locationResult = await apiFilter.searchByLocation(location);
+      apiFilter.model = locationResult.model;
+    }
+
     let cars = await apiFilter.model;
     const totalCount = cars.length;
 

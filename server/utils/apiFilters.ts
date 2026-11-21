@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import geocoder from './geoCoder';
 
 class APIFilters {
   model: any;
@@ -26,6 +27,43 @@ class APIFilters {
       : {};
 
     this.model = this.model.find({ ...searchQuery });
+    return this;
+  }
+
+  async searchByLocation(locationQuery?: string) {
+    let searchQuery = {};
+
+    if (locationQuery) {
+      const loc = await geocoder.geocode(locationQuery);
+      if (!loc.length) {
+        return this;
+      }
+
+      const { latitude, longitude } = loc[0];
+      const { city, administrativeLevels, streetName, zipcode } = loc[0];
+      const { level1long, level1short } = administrativeLevels!;
+
+      if (streetName || zipcode) {
+        const radius = 10;
+        searchQuery = {
+          location: {
+            $geoWithin: {
+              $centerSphere: [[longitude, latitude], radius / 6378.1],
+            },
+          },
+        };
+      } else if (city) {
+        searchQuery = {
+          'location.city': city,
+        };
+      } else if (level1long || level1short) {
+        searchQuery = {
+          $or: [{ 'location.state': level1long }, { 'location.stateCode': level1short }],
+        };
+      }
+    }
+
+    this.model = this.model.find(searchQuery);
     return this;
   }
 
