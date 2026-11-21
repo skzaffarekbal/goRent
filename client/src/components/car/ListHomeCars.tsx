@@ -1,6 +1,6 @@
 import { CardHeader, CardTitle } from '@/components/ui/card';
 import CardItem from '@/components/car/CardItem';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeftRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { ICar } from '@gorent/shared';
@@ -14,6 +14,9 @@ type Props = {
 };
 
 const ListHomeCars = ({ cars, loading, pagination }: Props) => {
+  const [searchParams] = useSearchParams();
+  const location = searchParams.get('location');
+
   if (loading) {
     return <LoadingSpinner fullScreen={true} size={60} />;
   }
@@ -22,7 +25,9 @@ const ListHomeCars = ({ cars, loading, pagination }: Props) => {
     <>
       <CardHeader className='p-0'>
         <CardTitle className='group flex items-center text-2xl p-0'>
-          Rent Car for Your Next Trip
+          {location
+            ? `${cars.length} Car${cars.length > 1 ? 's' : ''} near ${location}`
+            : 'Rent Car for Your Next Trip'}
         </CardTitle>
         <div className='flex'>
           <Link to='/search' className='inline-block'>

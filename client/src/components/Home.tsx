@@ -7,6 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { errorToast } from '@/utils/helpers';
 import HomeMap from './map/HomeMap';
+import LoadingSpinner from './layout/LoadingSpinner';
 
 const Home = () => {
   const [lastError, setLastError] = useState(null);
@@ -17,6 +18,8 @@ const Home = () => {
   const brand = searchParams.get('brand');
   const transmission = searchParams.get('transmission');
   const fuelType = searchParams.get('fuelType');
+
+  const location = searchParams.get('location');
 
   const page = Number(searchParams.get('page')) || 1;
 
@@ -32,6 +35,7 @@ const Home = () => {
     query,
     filters,
     page,
+    location,
   };
 
   const { loading, error, data } = useQuery<{
@@ -52,7 +56,7 @@ const Home = () => {
       <div className='md:col-span-2 lg:col-span-2 flex flex-col'>
         <Filters />
       </div>
-      <div className='grid auto-rows-max items-start gap-4 md:gap-8 md:col-span-4 lg:col-span-4 flex flex-col'>
+      <div className='auto-rows-max items-start gap-4 md:gap-8 md:col-span-4 lg:col-span-4 flex flex-col'>
         <ListHomeCars
           cars={data?.getAllCars?.cars}
           loading={loading}
@@ -61,7 +65,13 @@ const Home = () => {
       </div>
       <div className='md:col-span-6 lg:col-span-4 flex flex-col'>
         <div className='flex items-center justify-center h-screen'>
-          <HomeMap cars={data?.getAllCars?.cars} />
+          {loading ? (
+            <div className='flex items-center justify-center h-screen'>
+              <LoadingSpinner fullScreen={true} size={60} />
+            </div>
+          ) : (
+            location && <HomeMap cars={data?.getAllCars?.cars} />
+          )}
         </div>
         {/* Google Map Component */}
       </div>
