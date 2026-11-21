@@ -1,6 +1,6 @@
 import type { ICar } from '@gorent/shared';
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card } from '../ui/card';
 import { generateSvg } from '@/utils/helpers';
 
@@ -51,6 +51,7 @@ function HomeMap({ cars }: Props) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const googleMapRef = useRef<google.maps.Map | null>(null);
   const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
+  const [isMapReady, setIsMapReady] = useState(false);
 
   const coordinates: ICoordinates[] = cars?.map((car) => ({
     name: car.name,
@@ -70,8 +71,18 @@ function HomeMap({ cars }: Props) {
       const { Map } = await importLibrary('maps');
 
       if (isMounted && !googleMapRef.current) {
-        googleMapRef.current = new Map(mapRef.current, {
+        const mapInstance = new Map(mapRef.current, {
           mapId: import.meta.env.VITE_GOOGLE_MAP_ID,
+          center: { lat: 0, lng: 0 },
+          zoom: 2,
+        });
+
+        googleMapRef.current = mapInstance;
+
+        // Trigger resize event once map instance is attached to fix gray container bugs
+        google.maps.event.addListenerOnce(mapInstance, 'idle', () => {
+          google.maps.event.trigger(mapInstance, 'resize');
+          setIsMapReady(true);
         });
       }
     };
@@ -84,11 +95,11 @@ function HomeMap({ cars }: Props) {
   }, []);
 
   useEffect(() => {
-    if (!googleMapRef.current) return;
+    if (!googleMapRef.current || !isMapReady) return;
 
     const mapInstance = googleMapRef.current;
 
-    const parser = new DOMParser();
+    // 1. Clear existing markers
     markersRef.current.forEach((marker) => {
       marker.map = null;
     });
@@ -96,13 +107,8 @@ function HomeMap({ cars }: Props) {
 
     if (!coordinates || coordinates.length === 0) return;
 
-    (async () => {
-      const [{ InfoWindow }, { AdvancedMarkerElement }, { LatLngBounds }] = await Promise.all([
-        importLibrary('maps'),
-        importLibrary('marker'),
-        importLibrary('core'),
-      ]);
-
+    // 2. Helper function to handle center/bounds viewport
+    const updateViewport = (LatLngBounds) => {
       if (coordinates.length === 1) {
         mapInstance.setCenter({ lat: coordinates[0].lat, lng: coordinates[0].lng });
         mapInstance.setZoom(18);
@@ -113,7 +119,21 @@ function HomeMap({ cars }: Props) {
         });
         mapInstance.fitBounds(bounds);
       }
+    };
 
+    // 3. Function to load libraries and render markers
+    const renderMarkers = async () => {
+      const [{ InfoWindow }, { AdvancedMarkerElement }, { LatLngBounds }] = await Promise.all([
+        importLibrary('maps'),
+        importLibrary('marker'),
+        importLibrary('core'),
+      ]);
+
+      // Update map viewport
+      updateViewport(LatLngBounds);
+
+      // Render individual markers and info windows
+      const parser = new DOMParser();
       coordinates.forEach(({ id, name, lat, lng, image, rentPerDay }) => {
         const marker = new AdvancedMarkerElement({
           position: { lat, lng },
@@ -123,18 +143,21 @@ function HomeMap({ cars }: Props) {
         });
 
         const contentString = infoWindowContent(id, name, rentPerDay.toString(), image);
-
         const infoWindow = new InfoWindow({
           content: contentString,
         });
-        marker.addListener('click', () => {
+
+        marker.addListener('gmp-click', () => {
           infoWindow.open(mapInstance, marker);
         });
 
         markersRef.current.push(marker);
       });
-    })();
-  }, [coordinates]);
+    };
+
+    // 4. Conditional call
+    renderMarkers();
+  }, [coordinates, isMapReady]);
 
   return (
     <Card className='w-full flex-1'>
