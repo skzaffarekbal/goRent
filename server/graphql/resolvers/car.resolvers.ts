@@ -11,9 +11,14 @@ export const carResolvers = {
   Query: {
     getAllCars: (
       parent: any,
-      { page, filters, query }: { page: number; filters: CarFilters; query: string },
+      {
+        page,
+        filters,
+        query,
+        location,
+      }: { page: number; filters: CarFilters; query: string; location: string },
       context: any,
-    ) => getAllCars(page, filters, query),
+    ) => getAllCars(page, filters, query, location),
     getCarById: (_: any, { carId }: { carId: string }, context: any) => getCarById(carId),
   },
   Mutation: {
