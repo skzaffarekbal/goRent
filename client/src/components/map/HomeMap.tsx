@@ -73,8 +73,8 @@ function HomeMap({ cars }: Props) {
       if (isMounted && !googleMapRef.current) {
         const mapInstance = new Map(mapRef.current, {
           mapId: import.meta.env.VITE_GOOGLE_MAP_ID,
-          center: { lat: 0, lng: 0 },
-          zoom: 2,
+          center: { lat: 39.8283, lng: -98.5795 },
+          zoom: 3,
         });
 
         googleMapRef.current = mapInstance;
@@ -138,6 +138,7 @@ function HomeMap({ cars }: Props) {
         const marker = new AdvancedMarkerElement({
           position: { lat, lng },
           map: mapInstance,
+          gmpClickable: true,
           content: parser.parseFromString(createMarkerIcon(rentPerDay.toString()), 'image/svg+xml')
             .documentElement,
         });
