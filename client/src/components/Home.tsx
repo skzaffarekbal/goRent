@@ -56,7 +56,7 @@ const Home = () => {
       <div className='md:col-span-2 lg:col-span-2 flex flex-col'>
         <Filters />
       </div>
-      <div className='auto-rows-max items-start gap-4 md:gap-8 md:col-span-4 lg:col-span-4 flex flex-col'>
+      <div className='grid auto-rows-max items-start gap-4 md:gap-8 md:col-span-4 lg:col-span-4 flex flex-col'>
         <ListHomeCars
           cars={data?.getAllCars?.cars}
           loading={loading}
