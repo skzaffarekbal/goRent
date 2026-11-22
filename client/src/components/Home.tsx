@@ -24,10 +24,13 @@ const Home = () => {
   const startDate = searchParams.get('startDate');
   const endDate = searchParams.get('endDate');
 
+  const budget = searchParams.get('budget');
+
   const page = Number(searchParams.get('page')) || 1;
 
   const filters = {
     status: 'Active',
+    ...(budget && { rentPerDay: { lte: Number(budget) } }),
     ...(category && { category }),
     ...(brand && { brand }),
     ...(transmission && { transmission }),
