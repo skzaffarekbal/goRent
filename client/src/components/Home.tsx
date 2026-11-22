@@ -21,6 +21,9 @@ const Home = () => {
 
   const location = searchParams.get('location');
 
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+
   const page = Number(searchParams.get('page')) || 1;
 
   const filters = {
@@ -36,6 +39,7 @@ const Home = () => {
     filters,
     page,
     location,
+    ...(startDate && endDate && { dateFilters: { startDate, endDate } }),
   };
 
   const { loading, error, data } = useQuery<{
