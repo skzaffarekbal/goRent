@@ -28,3 +28,8 @@ export type CarFilters = {
   };
   fuelType?: string;
 };
+
+export type DateFilters = {
+  startDate: Date;
+  endDate: Date;
+};

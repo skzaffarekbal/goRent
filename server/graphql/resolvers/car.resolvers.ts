@@ -5,7 +5,7 @@ import {
   getCarById,
   updateCar,
 } from '../../controllers/car.controller';
-import { CarFilters, CarInput } from '../../types/car.types';
+import { CarFilters, CarInput, DateFilters } from '../../types/car.types';
 
 export const carResolvers = {
   Query: {
@@ -16,9 +16,16 @@ export const carResolvers = {
         filters,
         query,
         location,
-      }: { page: number; filters: CarFilters; query: string; location: string },
+        dateFilters,
+      }: {
+        page: number;
+        filters: CarFilters;
+        query: string;
+        location: string;
+        dateFilters: DateFilters;
+      },
       context: any,
-    ) => getAllCars(page, filters, query, location),
+    ) => getAllCars(page, filters, query, location, dateFilters),
     getCarById: (_: any, { carId }: { carId: string }, context: any) => getCarById(carId),
   },
   Mutation: {

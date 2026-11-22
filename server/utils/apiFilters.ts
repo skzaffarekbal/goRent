@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import geocoder from './geoCoder';
+import Booking from '../models/booking.model';
+import { DateFilters } from '../types/car.types';
 
 class APIFilters {
   model: any;
@@ -64,6 +66,50 @@ class APIFilters {
     }
 
     this.model = this.model.find(searchQuery);
+    return this;
+  }
+
+  async availability(dateFilter: DateFilters) {
+    const { startDate, endDate } = dateFilter || { startDate: '', endDate: '' };
+    const bookedCarsIDs = await Booking.aggregate([
+      {
+        $match: {
+          // Ensure the payment status is not cancelled
+          'paymentInfo.status': { $ne: 'cancelled' },
+
+          $or: [
+            // Condition 1: Booking overlaps with the search range.
+            {
+              startDate: { $lte: new Date(endDate) },
+              endDate: { $gte: new Date(startDate) },
+            },
+            // Condition 2: Booking completely covers with search range.
+            {
+              startDate: { $lte: new Date(startDate) },
+              endDate: { $gte: new Date(endDate) },
+            },
+            // Condition 3: Booking completely within search range
+            {
+              startDate: { $gte: new Date(startDate) },
+              endDate: { $lte: new Date(endDate) },
+            },
+          ],
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          bookedCars: { $addToSet: '$car' },
+        },
+      },
+    ]);
+
+    let bookedCarIds = [];
+    if (bookedCarsIDs.length) {
+      bookedCarIds = bookedCarsIDs[0].bookedCars;
+    }
+
+    this.model = this.model.find({ _id: { $nin: bookedCarIds } });
     return this;
   }
 
