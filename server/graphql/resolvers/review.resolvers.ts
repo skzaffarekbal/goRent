@@ -4,7 +4,7 @@ import { ReviewInput } from '../../types/review.types';
 
 export const reviewResolver = {
   Mutation: {
-    createUpdateReview: async (
+    createUpdateReview: (
       _: any,
       { reviewInput }: { reviewInput: ReviewInput },
       { user }: { user: IUser },

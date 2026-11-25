@@ -15,7 +15,7 @@ import LoadingSpinner from '@/components/layout/LoadingSpinner';
 import NotFound from '../layout/NotFound';
 // import { CustomBreadcrumb } from "../layout/BreadCrumbs";
 import { BookingForm } from '../booking/BookingForm';
-// import CarReviews from "../review/CarReviews";
+import CarReviews from '../review/CarReviews';
 
 const CarDetails = () => {
   const params = useParams();
@@ -95,7 +95,7 @@ const CarDetails = () => {
           <CarFeatures car={car} />
           <CarFaqs />
 
-          {/* <CarReviews /> */}
+          <CarReviews carId={car.id} />
         </div>
         <div>
           <BookingForm carId={car.id} rentPerDay={car.rentPerDay} disableDates={bookedDates} />
