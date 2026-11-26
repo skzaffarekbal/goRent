@@ -17,21 +17,25 @@ import { CREATE_UPDATE_REVIEW_MUTATION } from '@/graphql/mutations/review.mutati
 import { toast } from 'sonner';
 import LoadingSpinner from '../layout/LoadingSpinner';
 import { StarRating } from '../ui/star-rating';
+import type { IReview } from '@gorent/shared';
 
 type Props = {
   buttonText: string;
   carId: string;
+  review?: IReview;
+  refetchCar: () => void;
 };
 
-export function ReviewDialog({ buttonText, carId }: Props) {
-  const [rating, setRating] = useState<number>(0);
-  const [comment, setComment] = useState<string>('');
+export function ReviewDialog({ buttonText, carId, review, refetchCar }: Props) {
+  const [rating, setRating] = useState<number>(review?.rating || 0);
+  const [comment, setComment] = useState<string>(review?.comment || '');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [createUpdateReview, { loading }] = useMutation(CREATE_UPDATE_REVIEW_MUTATION, {
     onCompleted: () => {
       toast.success('Review Posted Successfully.');
       setIsDialogOpen(false);
+      refetchCar();
     },
   });
 
