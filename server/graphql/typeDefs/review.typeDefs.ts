@@ -5,14 +5,14 @@ export const reviewTypeDefs = gql`
     id: ID
     user: User
     car: Car
-    rating: Int
+    rating: Float
     comment: String
     createdAt: String
     updatedAt: String
   }
 
   input ReviewInput {
-    rating: Int!
+    rating: Float!
     comment: String!
     car: ID!
   }
