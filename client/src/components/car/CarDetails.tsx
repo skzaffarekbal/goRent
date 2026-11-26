@@ -36,10 +36,6 @@ const CarDetails = () => {
     return <LoadingSpinner fullScreen={true} size={60} />;
   }
 
-  // if (
-  //   (error as unknown as { graphQLErrors?: Array<{ extensions?: { code?: string } }> })
-  //     ?.graphQLErrors?.[0]?.extensions?.code === 'NOT_FOUND'
-  // ) {
   if (error) {
     return <NotFound />;
   }
@@ -95,7 +91,7 @@ const CarDetails = () => {
           <CarFeatures car={car} />
           <CarFaqs />
 
-          <CarReviews carId={car.id} />
+          <CarReviews carId={car.id} reviews={car.reviews || []} />
         </div>
         <div>
           <BookingForm carId={car.id} rentPerDay={car.rentPerDay} disableDates={bookedDates} />

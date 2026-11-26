@@ -4,12 +4,16 @@ import { DropdownMenuSeparator } from '../ui/dropdown-menu';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { ReviewDialog } from './ReviewDialog';
+import type { IReview } from '@gorent/shared';
+import { getUserNameInitials, parseTimestampDate } from '@/utils/helpers';
+import { StarRating } from '../ui/star-rating';
 
 type Props = {
   carId: string;
+  reviews: IReview[];
 };
 
-const CarReviews = ({ carId }: Props) => {
+const CarReviews = ({ carId, reviews }: Props) => {
   return (
     <div>
       <Card>
@@ -53,34 +57,51 @@ const CarReviews = ({ carId }: Props) => {
         </CardHeader>
       </Card>
 
-      <Card className='mt-10'>
-        <CardHeader className='bg-muted/25'>
-          <div className='grid gap-0.5'>
-            <CardTitle className='group flex items-center gap-2 mb-5 text-2xl'>
-              <p className='text-2xl font-bold mt-5'>2 Reviews</p>
-            </CardTitle>
-            <div className='text-sm text-muted-foreground'>
-              <div className='px-8'>
-                <div>
-                  <DropdownMenuSeparator />
-                  <div className='flex my-5'>
-                    <Avatar className='h-20 w-20'>
-                      <AvatarImage src='sdf' />
-                      <AvatarFallback>JS</AvatarFallback>
-                    </Avatar>
-                    <div className='ms-4'>
-                      <h3 className='text-xl font-black'>Johne Doe</h3>
-                      <p className='mb-3'>Last Updated: 2023-01-02</p>
-                      {/* Star Ratings Component */}
-                      <p className='mt-4 text-md font-semibold'>Nice</p>
-                    </div>
-                  </div>
+      {reviews?.length > 0 && (
+        <Card className='mt-10'>
+          <CardHeader className='bg-muted/25'>
+            <div className='grid gap-0.5'>
+              <CardTitle className='group flex items-center gap-2 mb-5 text-2xl'>
+                <p className='text-2xl font-bold mt-5'>{reviews.length} Reviews</p>
+              </CardTitle>
+              <div className='text-sm text-muted-foreground'>
+                <div className='px-8'>
+                  {reviews.map((review) => {
+                    return (
+                      <div key={review.id}>
+                        <DropdownMenuSeparator />
+                        <div className='flex my-5'>
+                          <Avatar className='h-20 w-20'>
+                            <AvatarImage src={review.user?.avatar?.url} />
+                            <AvatarFallback>
+                              {getUserNameInitials(review.user?.name)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className='ms-4'>
+                            <h3 className='text-xl font-black'>{review.user?.name}</h3>
+                            <p className='mb-3'>
+                              Last Updated: {parseTimestampDate(review.updatedAt)}
+                            </p>
+                            {/* Star Ratings Component */}
+                            <StarRating
+                              rating={review?.rating}
+                              starRatedColor='#f1a545'
+                              emptyColor='#cccccc'
+                              numberOfStars={5}
+                              size={4}
+                            />
+                            <p className='mt-4 text-md font-semibold'>{review.comment}</p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
-          </div>
-        </CardHeader>
-      </Card>
+          </CardHeader>
+        </Card>
+      )}
     </div>
   );
 };

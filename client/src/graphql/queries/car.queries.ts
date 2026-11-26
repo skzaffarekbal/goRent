@@ -57,6 +57,18 @@ query GetCarById($carId: ID!, $getCarBookedDatesCarId2: String!) {
       public_id
       url
     }
+    reviews {
+      user {
+        id
+        name
+        avatar { 
+          url 
+        }
+      }
+      rating
+      comment
+      updatedAt
+    }
     createdAt
     updatedAt
   }
