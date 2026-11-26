@@ -100,7 +100,7 @@ const carSchema = new mongoose.Schema<ICar>(
       required: [true, 'Please enter car category'],
       enum: { values: CarCategories, message: 'Please enter a valid car category' },
     },
-    reviews: [String],
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   },
   {
     timestamps: true,
@@ -108,10 +108,18 @@ const carSchema = new mongoose.Schema<ICar>(
 );
 
 carSchema.virtual('ratings').get(function () {
-  return {
-    value: 5,
-    count: 10,
-  };
+  let numOfReviews = this.reviews?.length || 0;
+  if (numOfReviews === 0) {
+    return {
+      value: 5,
+      count: 1,
+    };
+  }
+
+  const ratingSum = this.reviews?.reduce((sum: number, review: any) => sum + review.rating, 0);
+  const value = ratingSum && ratingSum > 0 ? ratingSum / numOfReviews : 0;
+
+  return { value, count: numOfReviews };
 });
 
 carSchema.pre('save', async function () {

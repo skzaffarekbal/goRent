@@ -34,6 +34,7 @@ export const carTypeDefs = gql`
     images: [CarImages]
     category: String!
     ratings: CarRatings
+    reviews: [Review]
     createdAt: String
     updatedAt: String
   }

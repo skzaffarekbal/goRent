@@ -13,7 +13,7 @@ export const getAllCars = catchAsyncErrors(
     dateFilters: DateFilters,
   ) => {
     const resPerPage = 3;
-    const apiFilter = new APIFilters(Car).search(query).filters(filters);
+    const apiFilter = new APIFilters(Car).search(query).filters(filters).populate('reviews');
 
     if (location) {
       const locationResult = await apiFilter.searchByLocation(location);
@@ -41,7 +41,10 @@ export const createCar = catchAsyncErrors(async (carInput: CarInput) => {
 });
 
 export const getCarById = catchAsyncErrors(async (carId: string) => {
-  const car = await Car.findById(carId);
+  const car = await Car.findById(carId).populate({
+    path: 'reviews',
+    populate: { path: 'user', model: 'User' },
+  });
   if (!car) throw new NotFoundError('Car not found');
   return car;
 });
