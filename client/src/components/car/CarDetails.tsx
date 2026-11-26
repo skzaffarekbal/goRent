@@ -19,7 +19,7 @@ import CarReviews from '../review/CarReviews';
 
 const CarDetails = () => {
   const params = useParams();
-  const { data, loading, error } = useQuery<{
+  const { data, loading, error, refetch } = useQuery<{
     getCarById: ICar;
     getCarBookedDates: string[];
   }>(GET_CAR_BY_ID, {
@@ -91,7 +91,7 @@ const CarDetails = () => {
           <CarFeatures car={car} />
           <CarFaqs />
 
-          <CarReviews carId={car.id} reviews={car.reviews || []} />
+          <CarReviews carId={car.id} reviews={car.reviews || []} refetchCar={refetch} />
         </div>
         <div>
           <BookingForm carId={car.id} rentPerDay={car.rentPerDay} disableDates={bookedDates} />
