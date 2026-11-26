@@ -62,7 +62,7 @@ export interface ICar {
     url: string;
     public_id: string;
   }[];
-  reviews: string[];
+  reviews: IReview[];
   brand: string;
   year: number;
   transmission: string;
