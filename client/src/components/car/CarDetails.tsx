@@ -22,10 +22,12 @@ const CarDetails = () => {
   const { data, loading, error, refetch } = useQuery<{
     getCarById: ICar;
     getCarBookedDates: string[];
+    canReview: boolean;
   }>(GET_CAR_BY_ID, {
     variables: {
       carId: params?.id,
       getCarBookedDatesCarId2: params?.id,
+      canReviewCarId: params?.id,
     },
   });
 
@@ -91,7 +93,12 @@ const CarDetails = () => {
           <CarFeatures car={car} />
           <CarFaqs />
 
-          <CarReviews carId={car.id} reviews={car.reviews || []} refetchCar={refetch} />
+          <CarReviews
+            carId={car.id}
+            reviews={car.reviews || []}
+            canReview={data?.canReview || false}
+            refetchCar={refetch}
+          />
         </div>
         <div>
           <BookingForm carId={car.id} rentPerDay={car.rentPerDay} disableDates={bookedDates} />
