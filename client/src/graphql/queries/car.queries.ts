@@ -58,10 +58,12 @@ query GetCarById($carId: ID!, $getCarBookedDatesCarId2: String!, $canReviewCarId
       url
     }
     reviews {
+      id
       user {
         id
         name
         avatar { 
+          public_id
           url 
         }
       }
