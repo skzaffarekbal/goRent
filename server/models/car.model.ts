@@ -111,8 +111,8 @@ carSchema.virtual('ratings').get(function () {
   let numOfReviews = this.reviews?.length || 0;
   if (numOfReviews === 0) {
     return {
-      value: 5,
-      count: 1,
+      value: 0,
+      count: 0,
     };
   }
 
