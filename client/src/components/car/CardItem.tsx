@@ -51,7 +51,7 @@ const CardItem = ({ car }: { car: ICar }) => {
             </p>
             <span className='w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400'></span>
             <p className='text-sm font-medium text-gray-900 underline hover:no-underline dark:text-white'>
-              {car?.ratings?.count} reviews
+              {car?.ratings?.count || 'No'} reviews
             </p>
           </div>
           <div className='flex items-center justify-between mt-6'>
