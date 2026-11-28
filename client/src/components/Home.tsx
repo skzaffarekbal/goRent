@@ -77,7 +77,8 @@ const Home = () => {
               <LoadingSpinner fullScreen={true} size={60} />
             </div>
           ) : (
-            location && <HomeMap cars={data?.getAllCars?.cars} />
+            // location &&
+            <HomeMap cars={data?.getAllCars?.cars} />
           )}
         </div>
         {/* Google Map Component */}
