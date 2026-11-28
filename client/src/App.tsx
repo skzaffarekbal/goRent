@@ -8,7 +8,7 @@ import Footer from '@/components/layout/Footer';
 import Register from '@/components/auth/Register';
 import Login from '@/components/auth/Login';
 import Profile from '@/components/user/Profile';
-import Dashboard from '@/components/admin/Dashboard';
+import Dashboard from '@/components/admin/Dashboard/Dashboard';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import ForgetPassword from '@/components/auth/ForgetPassword';
 import ResetPassword from '@/components/auth/ResetPassword';
