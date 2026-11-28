@@ -14,8 +14,7 @@ import { buildQueryString } from '@/utils/helpers';
 const Search = () => {
   const [location, setLocation] = useState<string>('');
   const [dates, setDates] = useState<DateRange | undefined>({ from: undefined, to: undefined });
-  const [budget, setBudget] = useState<number | undefined>(undefined);
-  //   const [searchParams, setSearchParams] = useSearchParams();
+  const [budget, setBudget] = useState<string>('');
 
   const navigate = useNavigate();
 
@@ -62,12 +61,7 @@ const Search = () => {
                         placeholder='50'
                         className='w-full rounded-lg bg-background pl-10'
                         value={budget}
-                        onChange={(e) => {
-                          setBudget((prevBudget) => {
-                            const value = e.target.value.replace(/\D/g, '');
-                            return value === '' ? prevBudget : Number(value);
-                          });
-                        }}
+                        onChange={(e) => setBudget(e.target.value)}
                       />
                     </div>
                   </div>
